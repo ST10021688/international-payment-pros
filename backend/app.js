@@ -20,6 +20,8 @@ mongoose.connect(process.env.MONGODB_URI, {
 .catch(err => console.error('MongoDB connection error:', err));
 
 // Routes
+app.use('/api/auth', authRoutes); // Use authRoutes for authentication-related endpoints
+
 app.get('/', (req, res) => {
   res.send('API is running...');
 });

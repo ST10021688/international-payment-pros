@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('./models/User'); // Mongoose model for User
+const { validationResult } = require('express-validator'); // For input validation
 
 // User registration
 const register = async (req, res) => {
@@ -13,8 +14,9 @@ const register = async (req, res) => {
     // Create user and save to MongoDB
     const newUser = new User({
       username,
-      accountNumber,
       password: hashedPassword,
+      fullName,
+      accountNumber,
     });
     await newUser.save();
 
@@ -26,22 +28,28 @@ const register = async (req, res) => {
 
 // User login
 const login = async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
   try {
     const { username, password } = req.body;
 
     // Find user by username
     const user = await User.findOne({ username });
-    if (!user) return res.status(401).json({ error: 'Invalid credentials' });
+    if (!user) return res.status(401).json({ error: 'No matching User found' });
 
     // Compare password
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(401).json({ error: 'Invalid credentials' });
+    if (!isMatch) return res.status(401).json({ error: 'Incorrect password' });
 
     // Generate JWT token
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
     res.json({ token });
   } catch (error) {
+    console.error('Login error:', error); // Log the error for debugging
     res.status(500).json({ error: 'Login failed' });
   }
 };
