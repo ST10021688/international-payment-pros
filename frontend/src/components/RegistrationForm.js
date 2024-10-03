@@ -71,54 +71,87 @@ const RegistrationForm = () => {
 */
 
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import authService from '../services/authService'; // Adjust the path as needed
 
-const RegistrationForm = () => {
-  const [formData, setFormData] = useState({
-    username: '',
-    accountNumber: '',
-    password: '',
-  });
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
+function Register() {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [fullName, setFullName] = useState('');
+  const [idNumber, setIdNumber] = useState('');
+  const [accountNumber, setAccountNumber] = useState('');
+  const [error, setError] = useState(null);
+  const navigate = useNavigate(); // Use useNavigate for redirection
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError(null); // Reset error state
+
     try {
-      const response = await fetch('/api/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      });
-      if (response.ok) {
-        alert('Registration successful!');
-      } else {
-        alert('Registration failed');
+      const data = await authService.register(username, password, fullName, idNumber, accountNumber);
+      // If registration is successful, navigate to the login page
+      if (data) {
+        navigate('/login'); // Redirect to the login page
       }
     } catch (error) {
-      console.error('Error:', error);
+      setError(error.message || 'Registration failed. Please try again.'); // Handle error
     }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        <label>Username:</label>
-        <input type="text" name="username" onChange={handleChange} required />
-      </div>
-      <div>
-        <label>Account Number:</label>
-        <input type="text" name="accountNumber" onChange={handleChange} required />
-      </div>
-      <div>
-        <label>Password:</label>
-        <input type="password" name="password" onChange={handleChange} required />
-      </div>
-      <button type="submit">Register</button>
-    </form>
+    <div>
+      <h2>Register</h2>
+      {error && <p style={{ color: 'red' }}>{error}</p>} {/* Display error message */}
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label>Full Name:</label>
+          <input
+            type="text"
+            value={fullName}
+            onChange={(e) => setFullName(e.target.value)}
+            required
+          />
+        </div>
+        <div>
+          <label>ID Number:</label>
+          <input
+            type="text"
+            value={idNumber}
+            onChange={(e) => setIdNumber(e.target.value)}
+            required
+          />
+        </div>
+        <div>
+          <label>Account Number:</label>
+          <input
+            type="text"
+            value={accountNumber}
+            onChange={(e) => setAccountNumber(e.target.value)}
+            required
+          />
+        </div>
+        <div>
+          <label>Username:</label>
+          <input
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+          />
+        </div>
+        <div>
+          <label>Password:</label>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </div>
+        <button type="submit">Register</button>
+      </form>
+    </div>
   );
-};
+}
 
-export default RegistrationForm;
+export default Register;
