@@ -3,11 +3,14 @@ require('dotenv').config(); // Load environment variables
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const helmet = require('helmet');
+const authRoutes = require('./routes/authRoutes'); // Adjust the path as necessary
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middleware
+app.use(helmet()); // Use helmet to secure the app by setting HTTP headers
 app.use(cors());
 app.use(express.json()); // Parse JSON request bodies
 

@@ -1,13 +1,12 @@
 const express = require('express');
-const authController = require('./authController'); // Import your authController
+const authController = require('../controllers/authController'); // Import your authController
 const router = express.Router();
-const rateLimiter = require('../middleware/rateLimiterMiddleware'); // Import the rate limiter middleware
+const rateLimiter = require('../middleware/rateLimiterMiddleware'); // Adjust the path as necessary
 
-rateLimiter.rateLimiter
 // User registration route
-router.post('/register', authController.register); // This calls the register function in authController
+router.post('/register', rateLimiter, authController.register); // This calls the register function in authController
 
 // User login route
-router.post('/login', authController.login); // This calls the login function in authController
+router.post('/login', rateLimiter, authController.login); // This calls the login function in authController
 
 module.exports = router;

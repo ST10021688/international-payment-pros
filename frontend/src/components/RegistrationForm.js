@@ -1,15 +1,13 @@
 // frontend/src/components/RegistrationForm.js
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import authService from '../services/authService'; // Adjust the path as needed
-import DOMPurify from 'dompurify';
+import authService from '../services/authService';
+import sanitizeInput from '../middleware/inputSanitizer';
 
 function Register() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [fullName, setFullName] = useState('');
-    const [idNumber, setIdNumber] = useState('');
     const [accountNumber, setAccountNumber] = useState('');
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false); // Loading state
@@ -33,18 +31,23 @@ function Register() {
         fetchCsrfToken();
     }, []);
 
-    // Validation patterns
-    const idNumberPattern = /^[0-9]{8,12}$/; // Adjust as per your requirements
-    const accountNumberPattern = /^[0-9]{8,12}$/; // Adjust as per your requirements
-
-
     // Handles form submission
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError(null); // Reset error state
 
+        // Sanitize user inputs
+        const sanitizedFullName = sanitizeInput(fullName);
+        const sanitizedUsername = sanitizeInput(username);
+        const sanitizedAccountNumber = sanitizeInput(accountNumber);
+
         try {
-            const data = await authService.register(username, password, fullName, idNumber, accountNumber);
+            const data = await authService.register(
+                sanitizedUsername,
+                password,
+                sanitizedFullName,
+                sanitizedAccountNumber
+            );
             // If registration is successful, navigate to the login page
             if (data) {
                 navigate('/login'); // Redirect to the login page
@@ -65,15 +68,6 @@ function Register() {
                         type="text"
                         value={fullName}
                         onChange={(e) => setFullName(e.target.value)}
-                        required
-                    />
-                </div>
-                <div>
-                    <label>ID Number:</label>
-                    <input
-                        type="text"
-                        value={idNumber}
-                        onChange={(e) => setIdNumber(e.target.value)}
                         required
                     />
                 </div>
