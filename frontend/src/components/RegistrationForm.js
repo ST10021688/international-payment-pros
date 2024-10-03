@@ -35,18 +35,25 @@ function Register() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError(null); // Reset error state
+        setLoading(true); // Start loading
 
         // Sanitize user inputs
         const sanitizedFullName = sanitizeInput(fullName);
         const sanitizedUsername = sanitizeInput(username);
         const sanitizedAccountNumber = sanitizeInput(accountNumber);
 
+        console.log('Sanitized Full Name:', sanitizedFullName);
+        console.log('Sanitized Username:', sanitizedUsername);
+        console.log('Sanitized Account Number:', sanitizedAccountNumber);
+        console.log('Password, CSRF Token:', password, csrfToken);
+        
         try {
             const data = await authService.register(
                 sanitizedUsername,
                 password,
                 sanitizedFullName,
-                sanitizedAccountNumber
+                sanitizedAccountNumber,
+                csrfToken // Include CSRF token in the request
             );
             // If registration is successful, navigate to the login page
             if (data) {
@@ -60,7 +67,7 @@ function Register() {
     return (
         <div>
             <h2>Register</h2>
-            {error && <p style={{ color: 'red' }}>{error}</p>} {/* Display error message */}
+            {error && <p style={{ color: 'red' }}>{error}</p>}
             <form onSubmit={handleSubmit}>
                 <div>
                     <label>Full Name:</label>
@@ -98,7 +105,9 @@ function Register() {
                         required
                     />
                 </div>
-                <button type="submit">Register</button>
+                <button type="submit" disabled={loading}>
+                    {loading ? 'Registering...' : 'Register'}
+                </button>
             </form>
         </div>
     );

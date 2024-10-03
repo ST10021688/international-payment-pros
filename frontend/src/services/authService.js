@@ -3,14 +3,17 @@ import axios from 'axios';
 
 const API_URL = 'http://localhost:5000/api/auth'; // Adjust this to your backend URL
 
-const register = async (username, password, fullName, idNumber, accountNumber) => {
+const register = async (username, password, fullName, accountNumber, csrfToken) => {
   try {
     const response = await axios.post(`${API_URL}/register`, {
       username,
       password,
       fullName,
-      idNumber,
       accountNumber,
+    }, {
+      headers: {
+        'X-CSRF-Token': csrfToken // Include the CSRF token in the headers
+      }
     });
     return response.data; // Return the response data (e.g., user info)
   } catch (error) {
