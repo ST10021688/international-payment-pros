@@ -2,7 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import authService from '../services/authService';
-import sanitizeInput from '../middleware/inputSanitizer';
+import { sanitizeInput, validateUsername, validateAccountNumber, validatePassword } from '../middleware/inputSanitizer';
+import './RegistrationForm.css'; // Import the CSS file for styles
 
 function Register() {
     const [username, setUsername] = useState('');
@@ -42,6 +43,25 @@ function Register() {
         const sanitizedUsername = sanitizeInput(username);
         const sanitizedAccountNumber = sanitizeInput(accountNumber);
 
+        // Validate inputs
+        if (!validateUsername(sanitizedUsername)) {
+            setError('Username must be 3-20 characters long and can only contain letters, numbers, and underscores.');
+            setLoading(false); // Stop loading
+            return;
+        }
+
+        if (!validateAccountNumber(sanitizedAccountNumber)) {
+            setError('Account number must consist of digits only.');
+            setLoading(false);
+            return;
+        }
+
+        if (!validatePassword(password)) {
+            setError('Password must be at least 8 characters long, include an uppercase letter, a lowercase letter, a digit, and a special character.');
+            setLoading(false);
+            return;
+        }
+
         console.log('Sanitized Full Name:', sanitizedFullName);
         console.log('Sanitized Username:', sanitizedUsername);
         console.log('Sanitized Account Number:', sanitizedAccountNumber);
@@ -62,13 +82,14 @@ function Register() {
         } catch (error) {
             setError(error.message || 'Registration failed. Please try again.'); // Handle error
         }
+        setLoading(false); // Stop loading after request
     };
 
     return (
-        <div>
+        <div className="registration-container">
             <h2>Register</h2>
-            {error && <p style={{ color: 'red' }}>{error}</p>}
-            <form onSubmit={handleSubmit}>
+            {error && <p className="error-message">{error}</p>}
+            <form onSubmit={handleSubmit} className="registration-form">
                 <div>
                     <label>Full Name:</label>
                     <input
