@@ -28,6 +28,8 @@ const registerUser = async (userData) => {
   }
 };
 
+const JWT_SECRET = "mytestsecret123"
+
 const loginUser = async (username, password) => {
   const user = await User.findOne({ username });
   if (!user) throw new Error('No matching User found');
@@ -35,7 +37,9 @@ const loginUser = async (username, password) => {
   const isMatch = await bcrypt.compare(password, user.password);
   if (!isMatch) throw new Error('Incorrect password');
 
-  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+  //const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+  const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: '1h' });
+
   return token;
 };
 
