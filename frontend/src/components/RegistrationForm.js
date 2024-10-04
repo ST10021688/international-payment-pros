@@ -1,4 +1,3 @@
-// frontend/src/components/RegistrationForm.js
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import authService from '../services/authService';
@@ -66,7 +65,7 @@ function Register() {
         console.log('Sanitized Username:', sanitizedUsername);
         console.log('Sanitized Account Number:', sanitizedAccountNumber);
         console.log('Password, CSRF Token:', password, csrfToken);
-        
+
         try {
             const data = await authService.register(
                 sanitizedUsername,
@@ -81,8 +80,14 @@ function Register() {
             }
         } catch (error) {
             setError(error.message || 'Registration failed. Please try again.'); // Handle error
+        } finally {
+            setLoading(false); // Stop loading after request
         }
-        setLoading(false); // Stop loading after request
+    };
+
+    // Function to navigate to the login page
+    const handleRedirectToLogin = () => {
+        navigate('/login'); // Navigate to the login page
     };
 
     return (
@@ -130,6 +135,12 @@ function Register() {
                     {loading ? 'Registering...' : 'Register'}
                 </button>
             </form>
+            <p>
+                Already have an account?
+                <button onClick={handleRedirectToLogin} className="redirect-button">
+                    Login
+                </button>
+            </p>
         </div>
     );
 }

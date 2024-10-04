@@ -1,0 +1,66 @@
+/* Login.css */
+.login-container {
+    background-color: #2e2e2e; /* Dark background */
+    color: #ffffff; /* White text */
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 400px;
+    margin: auto;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.error-message {
+    color: red;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.login-form div {
+    margin-bottom: 15px;
+}
+
+label {
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #3e3e3e; /* Input background */
+    color: #ffffff; /* Input text color */
+}
+
+input:focus {
+    outline: none;
+    border-color: #007bff; /* Change border color on focus */
+}
+
+button {
+    padding: 10px;
+    background-color: #007bff; /* Button color */
+    color: white; /* Button text color */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+button:disabled {
+    background-color: #ccc; /* Disable button background color */
+    cursor: not-allowed; /* Change cursor when disabled */
+}
