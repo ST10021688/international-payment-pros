@@ -7,7 +7,7 @@
     "start": "node backend/app.js",
     "dev": "nodemon backend/app.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "eslint \"frontend/src/**/*.{js,jsx}\" \"backend/**/*.js\""
+    "lint": "eslint \"frontend/src/**/*.{js,jsx}\" \"backend/**/*.js\" --fix"
   },
   "repository": {
     "type": "git",
