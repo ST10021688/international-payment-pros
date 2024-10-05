@@ -12,6 +12,9 @@ export default [
         ...globals.node,
         ...globals.jest,
       },
+      parserOptions: {
+        ecmaVersion: 2020, // Use a version that supports structuredClone
+      },
     },
     settings: {
       react: {
