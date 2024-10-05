@@ -23,5 +23,10 @@ export default [
     },
   },
   pluginJs.configs.recommended,
+  {
+    rules: {
+      'constructor-super': 'off', // Disable the problematic rule
+    },
+  },
   pluginReact.configs.flat.recommended,
 ];
