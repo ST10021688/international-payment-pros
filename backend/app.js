@@ -13,7 +13,6 @@ app.use(helmet()); // Use helmet to secure the app by setting HTTP headers
 app.use(cors());
 app.use(express.json()); // Parse JSON request bodies
 
-
 // Hardcoded MongoDB URI for testing
 const MONGODB_URI = "mongodb+srv://jrussellmmii:b5lmCUuycTA0ZNb8@apds-cluster.xqu4gnm.mongodb.net/APDS7311_POE?retryWrites=true&w=majority";
 
@@ -42,7 +41,7 @@ app.get('/', (req, res) => {
 });
 
 // Error handling middleware
-app.use((err, req, res, next) => {
+app.use((err, req, res) => {
   console.error(err.stack);
   res.status(500).send('Something broke!');
 });
