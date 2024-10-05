@@ -1,7 +1,7 @@
 import React from 'react'; 
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
-import '@testing-library/jest-dom/extend-expect'; // Import jest-dom for custom matchers
+import '@testing-library/jest-dom'; // Correct import for jest-dom
 import App from './App';
 
 test('renders login page by default', () => {
