@@ -9,6 +9,7 @@ function Register() {
     const [password, setPassword] = useState('');
     const [fullName, setFullName] = useState('');
     const [accountNumber, setAccountNumber] = useState('');
+    const [idNumber, setIDNumber] = useState('');
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false); // Loading state
     const [csrfToken, setCsrfToken] = useState(''); // State for CSRF token
@@ -22,12 +23,12 @@ function Register() {
                     credentials: 'include' // Include credentials for cookies
                 });
                 const data = await response.json();
+                console.log('CSRF token:', data.csrfToken);
                 setCsrfToken(data.csrfToken); // Set CSRF token from server
             } catch (error) {
                 console.error('Failed to fetch CSRF token:', error);
             }
         };
-
         fetchCsrfToken();
     }, []);
 
@@ -41,6 +42,7 @@ function Register() {
         const sanitizedFullName = sanitizeInput(fullName);
         const sanitizedUsername = sanitizeInput(username);
         const sanitizedAccountNumber = sanitizeInput(accountNumber);
+        const sanitizedIDNumber = sanitizeInput(idNumber);
 
         // Validate inputs
         if (!validateUsername(sanitizedUsername)) {
@@ -50,7 +52,13 @@ function Register() {
         }
 
         if (!validateAccountNumber(sanitizedAccountNumber)) {
-            setError('Account number must consist of digits only.');
+            setError('Account Number must consist of digits only.');
+            setLoading(false);
+            return;
+        }
+
+        if (!validateAccountNumber(sanitizedIDNumber)) {
+            setError('ID Number must consist of digits only.');
             setLoading(false);
             return;
         }
@@ -64,6 +72,7 @@ function Register() {
         console.log('Sanitized Full Name:', sanitizedFullName);
         console.log('Sanitized Username:', sanitizedUsername);
         console.log('Sanitized Account Number:', sanitizedAccountNumber);
+        console.log('Sanitized ID Number:', sanitizedIDNumber);
         console.log('Password, CSRF Token:', password, csrfToken);
 
         try {
@@ -72,7 +81,7 @@ function Register() {
                 password,
                 sanitizedFullName,
                 sanitizedAccountNumber,
-                csrfToken // Include CSRF token in the request
+                csrfToken
             );
             // If registration is successful, navigate to the login page
             if (data) {
@@ -110,6 +119,15 @@ function Register() {
                         type="text"
                         value={accountNumber}
                         onChange={(e) => setAccountNumber(e.target.value)}
+                        required
+                    />
+                </div>
+                <div>
+                    <label>ID Number:</label>
+                    <input
+                        type="text"
+                        value={idNumber}
+                        onChange={(e) => setIDNumber(e.target.value)}
                         required
                     />
                 </div>
