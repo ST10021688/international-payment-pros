@@ -15,7 +15,7 @@ app.use(cors());
 app.use(express.json()); // Parse JSON request bodies
 
 // Hardcoded MongoDB URI for testing
-const MONGODB_URI = "mongodb+srv://jrussellmmii:b5lmCUuycTA0ZNb8@apds-cluster.xqu4gnm.mongodb.net/APDS7311_POE?retryWrites=true&w=majority";
+//const MONGODB_URI = "mongodb+srv://jrussellmmii:b5lmCUuycTA0ZNb8@apds-cluster.xqu4gnm.mongodb.net/APDS7311_POE?retryWrites=true&w=majority";
 
 // Debugging: Check if MongoDB URI is defined
 console.log('MongoDB URI:', process.env.MONGODB_URI);
