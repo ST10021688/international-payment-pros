@@ -11,9 +11,11 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     strategy:
       matrix:
         node-version: [16.x]
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -23,14 +25,21 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: Install dependencies
+      - name: Install root dependencies
         run: npm install
 
+      - name: Install frontend dependencies
+        run: |
+          cd frontend
+          npm install
       - name: Run Lint
         run: npm run lint
+
 
       - name: Run Tests
         run: npm run test
 
       - name: Build Project
-        run: npm run build
+        run: |
+          cd frontend
+          npm run build
