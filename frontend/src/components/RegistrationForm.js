@@ -69,6 +69,7 @@ function Register() {
             return;
         }
 
+        // Debug logs
         console.log('Sanitized Full Name:', sanitizedFullName);
         console.log('Sanitized Username:', sanitizedUsername);
         console.log('Sanitized Account Number:', sanitizedAccountNumber);
