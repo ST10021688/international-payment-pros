@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const helmet = require('helmet');
 const authRoutes = require('./routes/authRoutes'); // Adjust the path as necessary
+const connectToDatabase = require('./db/conn_db');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -19,19 +20,10 @@ const MONGODB_URI = "mongodb+srv://jrussellmmii:b5lmCUuycTA0ZNb8@apds-cluster.xq
 // Debugging: Check if MongoDB URI is defined
 console.log('MongoDB URI:', process.env.MONGODB_URI);
 
-const connectDB = async () => {
-  try {
-    console.log('MongoDB URI:', MONGODB_URI); // Debugging output
-
-    await mongoose.connect(MONGODB_URI);
-    console.log('MongoDB connected');
-  } catch (error) {
-    console.error('MongoDB connection error:', error);
-    process.exit(1); // Exit the process if there is an error
-  }
-};
-
-connectDB(); // Call the connection function
+connectToDatabase().catch(err => {
+  console.error('Failed to connect to the database:', err);
+  process.exit(1); // Exit the process with an error code
+});
 
 // Routes
 app.use('/api/auth', authRoutes); // Use authRoutes for authentication-related endpoints
