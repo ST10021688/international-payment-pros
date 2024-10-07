@@ -1,5 +1,5 @@
 const express = require('express');
-const mongoose = require('mongoose');
+const connectToDatabase = require('./db/conn_db');
 const authRoutes = require('./authRoutes'); // Adjust the path as needed
 const cors = require('cors');
 const app = express();
@@ -8,10 +8,9 @@ const app = express();
 app.use(cors()); // Allow cross-origin requests
 app.use(express.json()); // Parse JSON request bodies
 
-// Database connection (make sure to adjust the connection string)
-mongoose.connect(process.env.MONGODB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
+connectToDatabase().catch(err => {
+  console.error('Failed to connect to the database:', err);
+  process.exit(1); // Exit the process with an error code
 });
 
 // Use the auth routes
