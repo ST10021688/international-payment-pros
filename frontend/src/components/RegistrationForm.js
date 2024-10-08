@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import authService from '../services/authService';
 import { sanitizeInput, validateUsername, validateAccountNumber, validatePassword } from '../middleware/inputSanitizer';
 import './RegistrationForm.css'; // Import the CSS file for styles
+import logo from '../assets/images/bank-logo.png'; // Import the logo image
+
 
 function Register() {
     const [username, setUsername] = useState('');
@@ -96,12 +98,16 @@ function Register() {
     };
 
     // Function to navigate to the login page
-    const handleRedirectToLogin = () => {
+    /*const handleRedirectToLogin = () => {
         navigate('/login'); // Navigate to the login page
-    };
+    };*/
 
     return (
         <div className="registration-container">
+            <div className="logo-container">
+        <img src={logo} alt="Logo" />
+        <label>Global Banking</label>
+      </div>
             <h2>Register</h2>
             {error && <p className="error-message">{error}</p>}
             <form onSubmit={handleSubmit} className="registration-form">
@@ -154,12 +160,10 @@ function Register() {
                     {loading ? 'Registering...' : 'Register'}
                 </button>
             </form>
-            <p>
-                Already have an account?
-                <button onClick={handleRedirectToLogin} className="redirect-button">
-                    Login
-                </button>
-            </p>
+            <div className="additional-info">
+        <label>Already have an account?</label>
+        <a href="/login">Login here</a>
+      </div>
         </div>
     );
 }

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import authService from '../services/authService';
 import { sanitizeInput, validateUsername, validatePassword } from '../middleware/inputSanitizer';
 import './LoginForm.css';
+import logo from '../assets/images/bank-logo.png'; // Import the logo image
 
 function Login() {
   const [username, setUsername] = useState('');
@@ -37,7 +38,7 @@ function Login() {
       const data = await authService.login(username, password);
       // If login is successful, navigate to the home page
       if (data) {
-        navigate('/register'); // Redirect to the login page
+        navigate('/register');
       }
     } catch (error) {
       setError(error.message || 'Login failed. Please try again.'); // Handle error
@@ -47,6 +48,10 @@ function Login() {
   
   return (
     <div className="login-container">
+      <div className="logo-container">
+        <img src={logo} alt="Logo" />
+        <label>Global Banking</label>
+      </div>
       <h2>Login</h2>
       {error && <p className="error-message">{error}</p>} {/* Display error message */}
       <form onSubmit={handleSubmit} className="login-form">
@@ -72,6 +77,10 @@ function Login() {
           {loading ? 'Logging in...' : 'Login'}
         </button>
       </form>
+      <div className="additional-info">
+        <label>Don't have an account?</label>
+        <a href="/register">Register here</a>
+      </div>
     </div>
   );
 }

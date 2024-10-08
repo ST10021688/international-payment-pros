@@ -1,12 +1,26 @@
 /* Login.css */
+body {
+    display: flex;
+    justify-content: flex-start; /* Align items to the left */
+    align-items: center; /* Center items vertically */
+    height: 100vh; /* Ensure the body takes the full height of the viewport */
+    margin: 0; /* Remove default margin */
+    background: url('../assets/images/sign-up-bg.svg') no-repeat center center fixed;
+    background-size: cover;
+    position: relative; /* Enable positioning of child elements */
+}
+
 .login-container {
-    background-color: #2e2e2e; /* Dark background */
-    color: #ffffff; /* White text */
+    background-color: rgba(46, 46, 46, 0.8); /* Semi-transparent background */
+    color: #ffffff;
     padding: 20px;
+    padding-top: 5px;
     border-radius: 8px;
     max-width: 400px;
-    margin: auto;
+    width: 100%; /* Ensure it takes the full width up to max-width */
+    margin-left: 80px; /* Add some margin to the left */
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    margin-bottom: 100px;
 }
 
 h2 {
@@ -23,37 +37,52 @@ h2 {
 .login-form {
     display: flex;
     flex-direction: column;
+    align-items: center; /* Center items horizontally */
 }
 
 .login-form div {
     margin-bottom: 15px;
+    width: 100%; /* Ensure div takes full width */
+    display: flex;
+    flex-direction: column; /* Stack label and input vertically */
+    align-items: center; /* Center the input and button */
 }
 
 label {
     margin-bottom: 5px;
-    font-weight: bold;
+    width: 100%;
+    max-width: 300px; /* Match input max-width */
+    text-align: left; /* Align label text to the left */
 }
 
 input {
     padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #3e3e3e; /* Input background */
-    color: #ffffff; /* Input text color */
+    border: none;
+    border-bottom: 1px solid #ccc !important; /* Thin grey bottom border */
+    background-color: transparent !important; /* No background */
+    color: #ccc !important; /* Input text color */
+    max-width: 300px;
+    width: 100%;
+    transition: border-color 0.5s ease, border-width 0.5s ease; /* Smooth transition */
+    border-radius: 0 !important; /* Ensure straight edges */
 }
 
 input:focus {
-    outline: none;
-    border-color: #007bff; /* Change border color on focus */
+    outline: none !important;
+    color: #ffffff !important; /* Input text color */
+    border-color: #ffffff !important; /* Change border color on focus */
+    border-width: 2px !important; /* Increase border size on focus */
 }
 
 button {
     padding: 10px;
-    background-color: #007bff; /* Button color */
+    background-color: #4B7AA5; /* Button color */
     color: white; /* Button text color */
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    max-width: 100px; /* Match input max-width */
+    width: 100%;
 }
 
 button:hover {
@@ -63,4 +92,54 @@ button:hover {
 button:disabled {
     background-color: #ccc; /* Disable button background color */
     cursor: not-allowed; /* Change cursor when disabled */
+}
+
+/* New styles for logo and label */
+.logo-container {
+    position: absolute;
+    top: 60px;
+    right: 60px;
+    display: flex;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.5); /* Semi-transparent white */
+    backdrop-filter: blur(10px); /* Apply blur effect */
+        padding: 10px;
+    padding-left: 0px;
+    border-radius: 16px;
+}
+
+.logo-container img {
+    max-width: 100px;
+}
+
+.logo-container label {
+    color: #0F225E;
+    font-size: 36px;
+    font-weight: bold;
+    margin-right: 5px;
+    margin-top: 5px;
+}
+
+
+/* New styles for additional info */
+.additional-info {
+    display: flex !important; /* Ensure flexbox layout */
+    flex-direction: column !important; /* Stack items vertically */
+    justify-content: center !important; /* Center items horizontally */
+    align-items: center !important; /* Center items vertically */
+    margin-top: 20px !important; /* Add space above the container */
+    width: auto !important; /* Ensure it takes only the necessary width */
+}
+
+.additional-info label {
+    margin-bottom: 5px !important; /* Add space below the label */
+    text-align: center !important; /* Center text */
+}
+.additional-info a {
+    color: #92E2F9 !important;
+    text-decoration: none !important;
+}
+
+.additional-info a:hover {
+    text-decoration: underline !important;
 }
