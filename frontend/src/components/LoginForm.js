@@ -38,7 +38,7 @@ function Login() {
       const data = await authService.login(username, password);
       // If login is successful, navigate to the home page
       if (data) {
-        navigate('/register');
+        navigate('/dashboard', { state: { fullName: data.fullName } });
       }
     } catch (error) {
       setError(error.message || 'Login failed. Please try again.'); // Handle error
