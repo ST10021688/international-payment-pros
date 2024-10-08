@@ -19,10 +19,8 @@ const CustomerDashboard = () => {
             }
 
             try {
-                const response = await authService.getUserInfo(token); // Using axios here
-
-                // Since axios automatically parses JSON, you can directly access the data
-                setFullName(response.user.fullName); // Update this to match the user's first name
+                const response = await authService.getUserInfo(token);
+                setFullName(response.user.fullName); 
                 setAccountNumber(response.account.accountNumber);
                 setAvailableBalance(`$${response.account.balance.toFixed(2)}`);
 
@@ -34,7 +32,15 @@ const CustomerDashboard = () => {
             }
         };
         fetchUserInfo();
-    }, []);
+    }, [navigate]);
+
+    const handleLocalPayments = () => {
+        navigate('/payment');
+    };
+
+    const handleInternationalPayments = () => {
+        navigate('/payment');
+    };
 
     return (
         <div className="dashboard">
@@ -52,6 +58,10 @@ const CustomerDashboard = () => {
                         <span>Available Balance: {balance}</span>
                     </div>
                 </div>
+            </div>
+            <div className="button-container">
+                <button onClick={handleLocalPayments}>Local Payments</button>
+                <button onClick={handleInternationalPayments}>International Payments</button>
             </div>
         </div>
     );

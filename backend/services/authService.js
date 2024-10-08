@@ -2,7 +2,8 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
-const Account = require('../models/Account'); // Import the Account model
+const Account = require('../models/Account'); 
+const Transaction = require('../models/Transaction'); 
 
 // Helper function to generate a random 12-digit account number
 const generateAccountNumber = () => {
@@ -59,7 +60,7 @@ const loginUser = async (username, password) => {
   // const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
   // Generate a JWT for the user
   const token = jwt.sign({ id: user._id, username: user.username }, process.env.JWT_SECRET, { expiresIn: '1h' });
-  
+
   const account = await Account.findOne({ userId: user._id });
 
   return { token, user: { id: user._id, username: user.username }, account };
@@ -70,7 +71,7 @@ const addTransaction = async (transactionData) => {
   const { userId, recipientName, recipientsBank, recipientsAccountNumber, amountToTransfer, swiftCode, transactionType, status } = transactionData;
 
   try {
-    const newTransaction = new Transaction({
+    const transaction = new Transaction({
       userId,
       recipientName,
       recipientsBank,
@@ -78,14 +79,22 @@ const addTransaction = async (transactionData) => {
       amountToTransfer,
       swiftCode,
       transactionType,
-      status,
+      status
     });
-
-    await newTransaction.save();
-    return { message: 'Transaction added successfully', transaction: newTransaction };
+    await transaction.save();
+    return transaction;
   } catch (error) {
-    throw new Error('Transaction failed: ' + error.message);
+    throw new Error('Failed to add transaction');
   }
 };
 
-module.exports = { registerUser, loginUser, addTransaction };
+const getTransactions = async (userId) => {
+  try {
+    const transactions = await Transaction.find({ userId });
+    return transactions;
+  } catch (error) {
+    throw new Error('Failed to fetch transactions');
+  }
+};
+
+module.exports = { registerUser, loginUser, addTransaction, getTransactions };

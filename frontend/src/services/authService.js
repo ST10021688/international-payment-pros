@@ -60,13 +60,47 @@ const getUserInfo = async (token) => {
     throw error.response.data; // Throw an error if the request fails
   }
 };
-
+/*
 const addTransaction = async (transactionData) => {
   try {
     const response = await axios.post(`${API_URL}/transaction`, transactionData);
-    return response.data; // Return the response data (e.g., transaction info)
+
+    if (response.status === 201) {
+      // Ensure response was successful
+      return response.data; // Return transaction info on success
+    } else {
+      throw new Error('Failed to process transaction');
+    }
   } catch (error) {
-    throw error.response.data; // Throw an error if the request fails
+    // Handle different error cases and avoid breaking if error.response is undefined
+    const errorMessage = error.response?.data?.message || 'Transaction failed';
+    throw new Error(errorMessage);
+  }
+};
+*/
+const payment = async (transactionData, token) => {
+  try {
+    const response = await axios.post(`${API_URL}/transaction`, transactionData, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    return response.data;
+  } catch (error) {
+    throw error.response.data;
+  }
+};
+
+const getTransactions = async (token) => {
+  try {
+    const response = await axios.get(`${API_URL}/transactions`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    return response.data;
+  } catch (error) {
+    throw error.response.data;
   }
 };
 
@@ -74,7 +108,8 @@ const authService = {
   login,
   register,
   getUserInfo,
-  addTransaction,
+  payment,
+  getTransactions,
 };
 
 export default authService;

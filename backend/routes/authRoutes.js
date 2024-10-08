@@ -5,6 +5,7 @@ const rateLimiter = require('../middleware/rateLimiterMiddleware'); // Adjust th
 const User = require('../models/User');
 const checkAuth = require('../middleware/checkAuth'); // Middleware to check JWT token
 const Account = require('../models/Account'); // Adjust the path if necessary
+const Transaction = require('../models/Transaction'); 
 
 
 // User registration route
@@ -54,6 +55,32 @@ router.get('/info', checkAuth, async (req, res) => {
         res.status(500).send({ error: 'Failed to retrieve user info' });
     }
 });
+/*
+// POST a new payment
+router.post('/transaction', async (req, res) => {
+  const { userId, recipientName, recipientsBank, recipientsAccountNumber, amountToTransfer, swiftCode, transactionType, status } = req.body;
 
+  try {
+    const newPayment = new Payment({
+        userId,
+        recipientName,
+        recipientsBank,
+        recipientsAccountNumber,
+        amountToTransfer,
+        swiftCode,
+        transactionType,
+        status,
+    });
+    const savedPayment = await newPayment.save();
+    res.status(201).json(savedPayment);
+  } catch (err) {
+    res.status(400).json({ error: 'Error processing payment' });
+  }
+});
+*/
+
+router.post('/transaction', checkAuth, authController.addTransaction);
+
+router.get('/transactions', checkAuth, authController.getTransactions);
 
 module.exports = router;

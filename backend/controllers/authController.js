@@ -32,4 +32,31 @@ const login = async (req, res) => {
   }
 };
 
-module.exports = { register, login };
+// Calls the addTransaction function from authService
+const addTransaction = async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    console.error('Validation errors:', errors.array());
+    return res.status(400).json({ errors: errors.array() });
+  }
+
+  try {
+    const transaction = await authService.addTransaction({ ...req.body, userId: req.user.id });
+    res.status(201).json({ message: 'Transaction added successfully', transaction });
+  } catch (error) {
+    console.error('Transaction error:', error.message);
+    res.status(500).json({ error: error.message });
+  }
+};
+
+// Calls the getTransactions function from authService
+const getTransactions = async (req, res, next) => {
+  try {
+    const transactions = await authService.getTransactions(req.user.id);
+    res.json(transactions);
+  } catch (error) {
+    next(error); // Pass the error to the next middleware
+  }
+};
+
+module.exports = { register, login, addTransaction, getTransactions };

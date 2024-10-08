@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import Register from './components/RegistrationForm';
 import Login from './components/LoginForm';
 import CustomerDashboard from './components/CustomerDashboard';
-import Payment from './components/PaymentForm';
+import Payment from './components/PaymentsForm';
 
 
 function App() {
