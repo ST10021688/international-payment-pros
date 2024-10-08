@@ -1,6 +1,8 @@
-const csrf = require('csurf');
+const csurf = require('csurf');
 
-// Initialize CSRF protection middleware
-const csrfProtection = csrf({ cookie: true });
+// Setup CSRF protection middleware
+const csrfProtection = csurf({
+  cookie: true // Store the CSRF token in a cookie
+});
 
 module.exports = csrfProtection;

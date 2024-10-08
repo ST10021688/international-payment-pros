@@ -54,6 +54,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const helmet = require('helmet');
+const csrfProtection = require('./middleware/csrfProtectionMiddleware'); 
+const cookieParser = require('cookie-parser');
 const authRoutes = require('./routes/authRoutes'); 
 const connectToDatabase = require('./db/conn_db');
 const https = require('https'); // Include https module
@@ -73,10 +75,17 @@ const sslOptions = {
 app.use(helmet()); // Use helmet to secure the app by setting HTTP headers
 app.use(cors());
 app.use(express.json()); // Parse JSON request bodies
+app.use(cookieParser()); // Use cookie-parser
+app.use(csrfProtection); // Use CSRF protection middleware
 
 connectToDatabase().catch(err => {
   console.error('Failed to connect to the database:', err);
   process.exit(1); // Exit the process with an error code
+});
+
+// Route to get CSRF token
+app.get('/api/csrf-token', (req, res) => {
+  res.json({ csrfToken: req.csrfToken() });
 });
 
 // Routes

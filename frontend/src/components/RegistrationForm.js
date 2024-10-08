@@ -5,7 +5,6 @@ import { sanitizeInput, validateUsername, validateIDNumber, validatePassword } f
 import './RegistrationForm.css'; // Import the CSS file for styles
 import logo from '../assets/images/bank-logo.png'; // Import the logo image
 
-
 function Register() {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
@@ -123,7 +122,7 @@ function Register() {
                     />
                 </div>
                 <div>
-                    <label>email Address:</label>
+                    <label>Email Address:</label>
                     <input
                         type="text"
                         value={emailAddress}
