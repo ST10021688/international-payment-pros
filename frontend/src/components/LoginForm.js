@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import authService from '../services/authService';
 import { sanitizeInput, validateUsername, validatePassword } from '../middleware/inputSanitizer';
@@ -39,7 +39,7 @@ function Login() {
       const data = await authService.login(username, password);
       // If login is successful, navigate to the home page
       if (data) {
-        setUser({ userId: data.userId, fullName: data.fullName });
+        setUser({ userId: data.userId, firstName: data.firstName });
         navigate('/dashboard');
       }
     } catch (error) {

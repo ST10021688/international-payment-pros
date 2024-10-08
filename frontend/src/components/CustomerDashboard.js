@@ -1,16 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
+// frontend/src/components/CustomerDashboard.js
+import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { UserContext } from '../UserContext';
 import './CustomerDashboard.css';
 
-const CustomerDashboard = ({ customerName, userId }) => {
+const CustomerDashboard = () => {
   const [accountDetails, setAccountDetails] = useState({});
   const [transactions, setTransactions] = useState([]);
   const navigate = useNavigate();
+  const { user } = useContext(UserContext);
+  const userId = user?.userId;
 
   useEffect(() => {
-    // Fetch account details
+    if (!userId) return;
+
     const fetchAccountDetails = async () => {
       try {
         const response = await axios.get(`/api/accounts/${userId}`);
@@ -20,7 +24,6 @@ const CustomerDashboard = ({ customerName, userId }) => {
       }
     };
 
-    // Fetch recent transactions
     const fetchTransactions = async () => {
       try {
         const response = await axios.get(`/api/transactions/${userId}`);
@@ -34,21 +37,18 @@ const CustomerDashboard = ({ customerName, userId }) => {
     fetchTransactions();
   }, [userId]);
 
-  const firstName = customerName.split(' ')[0];
+  const firstName = user?.fullName.split(' ')[0];
 
   const handlePaymentButtonClick = (type) => {
-    navigate('/payment', { state: { paymentType: type, userId } });
+    navigate('/payment', { state: { paymentType: type } });
   };
 
   return (
     <div className="dashboard">
-      {/* Header Section */}
       <header>
         <h1>Customer Dashboard</h1>
         <h2>Hello, {firstName}</h2>
       </header>
-
-      {/* Navigation Menu (Left Sidebar) */}
       <nav className="sidebar">
         <div className="menu">
           <button>Menu &gt;</button>
@@ -58,22 +58,16 @@ const CustomerDashboard = ({ customerName, userId }) => {
           </div>
         </div>
       </nav>
-
-      {/* Main Actions (Top Center) */}
       <div className="main-actions">
         <button className="action-button" onClick={() => handlePaymentButtonClick('local')}>Make Local Payment</button>
         <button className="action-button" onClick={() => handlePaymentButtonClick('international')}>Make International Payment</button>
       </div>
-
-      {/* Banking Details (Center) */}
       <section className="banking-details">
         <h3>Banking Details</h3>
         <p>Account type: Current Acc.</p>
         <p>Account number: {accountDetails.accountNumber}</p>
         <p>Available balance: ${accountDetails.balance}</p>
       </section>
-
-      {/* Payment Receipts (Bottom Center) */}
       <section className="payment-receipts">
         <h3>Payment Receipts</h3>
         {transactions.map((transaction) => (
@@ -87,11 +81,6 @@ const CustomerDashboard = ({ customerName, userId }) => {
       </section>
     </div>
   );
-};
-
-CustomerDashboard.propTypes = {
-  customerName: PropTypes.string.isRequired,
-  userId: PropTypes.string.isRequired,
 };
 
 export default CustomerDashboard;

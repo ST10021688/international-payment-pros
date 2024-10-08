@@ -67,7 +67,6 @@ function Register() {
         // Debug logs
         console.log('Sanitized Full Name:', sanitizedFullName);
         console.log('Sanitized Username:', sanitizedUsername);
-        console.log('Sanitized Account Number:', sanitizedAccountNumber);
         console.log('Sanitized ID Number:', sanitizedIDNumber);
         console.log('Password, CSRF Token:', password, csrfToken);
 
@@ -76,7 +75,6 @@ function Register() {
                 sanitizedUsername,
                 password,
                 sanitizedFullName,
-                sanitizedAccountNumber,
                 csrfToken
             );
             // If registration is successful, navigate to the login page

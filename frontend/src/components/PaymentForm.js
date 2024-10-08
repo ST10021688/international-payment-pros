@@ -1,12 +1,16 @@
-import React, { useState } from 'react';
+// frontend/src/components/PaymentForm.js
+import React, { useState, useContext } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
+import { UserContext } from '../UserContext';
 import './PaymentForm.css';
 
 const PaymentForm = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { paymentType, userId } = location.state || {};
+  const { paymentType } = location.state || {};
+  const { user } = useContext(UserContext);
+  const userId = user?.userId;
   const [paymentDetails, setPaymentDetails] = useState({
     recipientName: '',
     recipientBank: '',
@@ -31,14 +35,12 @@ const PaymentForm = () => {
         userId,
         paymentType
       });
-      navigate('/dashboard'); // Redirect to dashboard after successful payment
+      navigate('/dashboard');
     } catch (error) {
       console.error('Error making payment:', error);
     }
   };
 
-  
-  // UI
   return (
     <div className="payment-form-container">
       <h3>{paymentType === 'local' ? 'Local Payment' : 'International Payment'}</h3>

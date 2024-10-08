@@ -16,12 +16,12 @@ const generateAccountNumber = async () => {
       isUnique = true;
     }
   }
-
   return accountNumber;
 };
 
+// Function to register a new user
 const registerUser = async (userData) => {
-  const { username, password, fullName, idNumber } = userData;
+  const { firstName, lastName, email, username, password, idNumber } = userData;
 
   try {
     const existingUser = await User.findOne({ username });
@@ -32,9 +32,11 @@ const registerUser = async (userData) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const newUser = new User({
+      firstName, 
+      lastName, 
+      email,
       username,
       password: hashedPassword,
-      fullName,
       idNumber,
     });
 
@@ -45,19 +47,21 @@ const registerUser = async (userData) => {
     const account = new Account({
       userId: newUser._id,
       accountNumber,
-      balance: 0 // Initial balance
+      balance: 0 
     });
 
     await account.save();
 
     return { message: 'User registered successfully', user: newUser };
   } catch (error) {
+    console.error('Registration failed:', error); // Log the error for debugging
     throw new Error('Registration failed: ' + error.message);
   }
 };
 
 const JWT_SECRET = "mytestsecret123"
 
+// Function to log in a user
 const loginUser = async (username, password) => {
   const user = await User.findOne({ username });
   if (!user) throw new Error('No matching User found');

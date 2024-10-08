@@ -3,7 +3,9 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const helmet = require('helmet');
-const authRoutes = require('./routes/authRoutes'); // Adjust the path as necessary
+const authRoutes = require('./routes/authRoutes');
+const accountRoutes = require('./routes/accountRoutes');
+const transactionRoutes = require('./routes/transactionRoutes');
 const connectToDatabase = require('./db/conn_db');
 
 const app = express();

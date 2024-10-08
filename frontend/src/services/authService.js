@@ -3,12 +3,14 @@ import axios from 'axios';
 
 const API_URL = 'http://localhost:5000/api/auth'; // Adjust this to your backend URL
 
-const register = async (username, password, fullName, idNumber, csrfToken) => {
+const register = async (firstName, lastName, email, username, password, idNumber, csrfToken) => {
   try {
     const response = await axios.post(`${API_URL}/register`, {
+      firstName, 
+      lastName, 
+      email,
       username,
       password,
-      fullName,
       idNumber,
     }, {
       headers: {
