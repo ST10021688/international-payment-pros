@@ -8,10 +8,26 @@ pipeline {
     }
 
     stages {
-        stage('Build') {
+        stage('Checkout') {
             steps {
-                sh 'npm install'
-                sh 'npm run build'
+                // Checkout the Git repository
+                git 'https://github.com/ST10021688/international-payment-pros.git'
+            }
+        }
+        stage('Install Backend Dependencies') {
+            steps {
+                dir('backend') {
+                    sh 'npm install'
+                    sh 'npm run build' // Adjust if needed; ensure build script is available
+                }
+            }
+        }
+        stage('Install Frontend Dependencies') {
+            steps {
+                dir('frontend') {
+                    sh 'npm install'
+                    sh 'npm run build' // Ensure the build script exists for frontend
+                }
             }
         }
         stage('Docker Build') {
