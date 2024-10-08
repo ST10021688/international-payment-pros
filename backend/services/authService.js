@@ -59,19 +59,34 @@ const registerUser = async (userData) => {
   }
 };
 
-const JWT_SECRET = "mytestsecret123"
+const JWT_SECRET = "mytestsecret123";
 
 // Function to log in a user
 const loginUser = async (username, password) => {
-  const user = await User.findOne({ username });
-  if (!user) throw new Error('No matching User found');
+  try {
+    const user = await User.findOne({ username });
+    if (!user) {
+      console.error('No matching User found');
+      throw new Error('No matching User found');
+    }
 
-  const isMatch = await bcrypt.compare(password, user.password);
-  if (!isMatch) throw new Error('Incorrect password');
+    console.log('User found:', user);
 
-  const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: '1h' });
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      console.error('Incorrect password');
+      throw new Error('Incorrect password');
+    }
 
-  return token;
+    console.log('Password match:', isMatch);
+
+    const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: '1h' });
+
+    return token;
+  } catch (error) {
+    console.error('Login failed:', error);
+    throw new Error('Login failed: ' + error.message);
+  }
 };
 
 module.exports = { registerUser, loginUser };
