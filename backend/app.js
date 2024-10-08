@@ -21,6 +21,8 @@ connectToDatabase().catch(err => {
 
 // Routes
 app.use('/api/auth', authRoutes); // Use authRoutes for authentication-related endpoints
+app.use('/api/accounts', accountRoutes);
+app.use('/api/transactions', transactionRoutes);
 
 app.get('/', (req, res) => {
   res.send('API is running...');

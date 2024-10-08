@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import authService from '../services/authService';
 import { sanitizeInput, validateUsername, validatePassword } from '../middleware/inputSanitizer';
+import { UserContext } from '../UserContext';
 import './LoginForm.css';
 import logo from '../assets/images/bank-logo.png'; // Import the logo image
 
@@ -11,7 +12,7 @@ function Login() {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false); // Loading state
   const navigate = useNavigate();
-
+  const { setUser } = useContext(UserContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -38,7 +39,8 @@ function Login() {
       const data = await authService.login(username, password);
       // If login is successful, navigate to the home page
       if (data) {
-        navigate('/dashboard', { state: { fullName: data.fullName } });
+        setUser({ userId: data.userId, fullName: data.fullName });
+        navigate('/dashboard');
       }
     } catch (error) {
       setError(error.message || 'Login failed. Please try again.'); // Handle error
@@ -46,6 +48,8 @@ function Login() {
     setLoading(false);
   };
   
+
+  // UI
   return (
     <div className="login-container">
       <div className="logo-container">

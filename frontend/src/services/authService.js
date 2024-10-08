@@ -3,13 +3,12 @@ import axios from 'axios';
 
 const API_URL = 'http://localhost:5000/api/auth'; // Adjust this to your backend URL
 
-const register = async (username, password, fullName, accountNumber, idNumber, csrfToken) => {
+const register = async (username, password, fullName, idNumber, csrfToken) => {
   try {
     const response = await axios.post(`${API_URL}/register`, {
       username,
       password,
       fullName,
-      accountNumber,
       idNumber,
     }, {
       headers: {
@@ -34,9 +33,29 @@ const login = async (username, password) => {
   }
 };
 
+const payment = async (userId, recipientName, recipientsBank, recipientsAccountNumber, amountToTransfer, swiftCode, transactionType, status, date) => {
+  try {
+    const response = await axios.post(`${API_URL}/transactions`, {
+      userId,
+      recipientName,
+      recipientsBank,
+      recipientsAccountNumber,
+      amountToTransfer,
+      swiftCode,
+      transactionType,
+      status,
+      date,
+    });
+    return response.data; // Return the response data (e.g., user info, token)
+  } catch (error) {
+    throw error.response.data; // Throw an error if the request fails
+  }
+};
+
 const authService = {
   login,
   register,
+  payment,
 };
 
 export default authService;

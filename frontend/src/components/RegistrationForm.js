@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import authService from '../services/authService';
-import { sanitizeInput, validateUsername, validateAccountNumber, validatePassword } from '../middleware/inputSanitizer';
+import { sanitizeInput, validateUsername, validateIDNumber, validatePassword } from '../middleware/inputSanitizer';
 import './RegistrationForm.css'; // Import the CSS file for styles
 import logo from '../assets/images/bank-logo.png'; // Import the logo image
 
@@ -10,11 +10,11 @@ function Register() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [fullName, setFullName] = useState('');
-    const [accountNumber, setAccountNumber] = useState('');
     const [idNumber, setIDNumber] = useState('');
-    const [error, setError] = useState(null);
-    const [loading, setLoading] = useState(false); // Loading state
     const [csrfToken, setCsrfToken] = useState(''); // State for CSRF token
+    const [loading, setLoading] = useState(false); // Loading state
+
+    const [error, setError] = useState(null);
     const navigate = useNavigate(); // Use useNavigate for redirection
 
     useEffect(() => {
@@ -43,7 +43,6 @@ function Register() {
         // Sanitize user inputs
         const sanitizedFullName = sanitizeInput(fullName);
         const sanitizedUsername = sanitizeInput(username);
-        const sanitizedAccountNumber = sanitizeInput(accountNumber);
         const sanitizedIDNumber = sanitizeInput(idNumber);
 
         // Validate inputs
@@ -53,13 +52,7 @@ function Register() {
             return;
         }
 
-        if (!validateAccountNumber(sanitizedAccountNumber)) {
-            setError('Account Number must consist of digits only.');
-            setLoading(false);
-            return;
-        }
-
-        if (!validateAccountNumber(sanitizedIDNumber)) {
+        if (!validateIDNumber(sanitizedIDNumber)) {
             setError('ID Number must consist of digits only.');
             setLoading(false);
             return;
@@ -117,15 +110,6 @@ function Register() {
                         type="text"
                         value={fullName}
                         onChange={(e) => setFullName(e.target.value)}
-                        required
-                    />
-                </div>
-                <div>
-                    <label>Account Number:</label>
-                    <input
-                        type="text"
-                        value={accountNumber}
-                        onChange={(e) => setAccountNumber(e.target.value)}
                         required
                     />
                 </div>

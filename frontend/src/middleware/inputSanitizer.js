@@ -10,10 +10,10 @@ const validateUsername = (username) => {
   return usernameRegex.test(username);
 };
 
-const validateAccountNumber = (accountNumber) => {
+const validateIDNumber = (idNumber) => {
   // Account number must only contain digits
-  const accountNumberRegex = /^\d+$/; // Only digits
-  return accountNumberRegex.test(accountNumber);
+  const idNumberRegex = /^\d+$/; // Only digits
+  return idNumberRegex.test(idNumber);
 };
 
 const validatePassword = (password) => {
@@ -25,6 +25,6 @@ const validatePassword = (password) => {
 module.exports = {
   sanitizeInput,
   validateUsername,
-  validateAccountNumber,
+  validateIDNumber,
   validatePassword
 };
