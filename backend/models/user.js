@@ -14,10 +14,6 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  accountNumber: {
-    type: String,
-    required: true,
-  },
   idNumber: {
     type: String,
     required: true,

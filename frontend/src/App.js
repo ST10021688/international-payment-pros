@@ -4,6 +4,9 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Register from './components/RegistrationForm';
 import Login from './components/LoginForm';
+import CustomerDashboard from './components/CustomerDashboard';
+import Payment from './components/PaymentForm';
+
 
 function App() {
   return (
@@ -15,6 +18,12 @@ function App() {
 
           {/* Route for the login page */}
           <Route path="/login" element={<Login />} />
+
+          {/* Route for the registration page */}
+          <Route path="/dashboard" element={<CustomerDashboard />} />
+
+          {/* Route for the registration page */}
+          <Route path="/payment" element={<Payment />} />
 
           <Route path="/" element={<Navigate to="/login" replace />} />
         </Routes>

@@ -35,10 +35,14 @@ function Login() {
     }
 
     try {
-      const data = await authService.login(username, password);
+      const result = await authService.login(username, password);
       // If login is successful, navigate to the home page
-      if (data) {
-        navigate('/register');
+      if (result) {
+        console.log('Login successful:', result);
+        console.log('Token:', result.token.token);
+        localStorage.setItem('token', result.token.token); // Store the token in localStorage
+        
+        navigate('/dashboard');
       }
     } catch (error) {
       setError(error.message || 'Login failed. Please try again.'); // Handle error

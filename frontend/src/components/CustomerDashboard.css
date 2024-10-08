@@ -1,0 +1,46 @@
+.dashboard {
+    text-align: center;
+}
+
+.button-container {
+    margin: 20px 0;
+}
+
+.button-container button {
+    margin: 0 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.content {
+    margin-top: 20px;
+}
+
+.accounts, .transactions {
+    text-align: left;
+    margin: 0 auto;
+    max-width: 600px;
+}
+
+.accounts p, .transactions p {
+    margin: 5px 0;
+}
+
+.banking-details-container {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    background-color: #f9f9f9; /* Example background color */
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.banking-logo {
+    width: 100px; /* Adjust logo size */
+    margin-right: 20px; /* Space between logo and text */
+}
+
+.banking-details {
+    font-size: 16px; /* Font size for details */
+}

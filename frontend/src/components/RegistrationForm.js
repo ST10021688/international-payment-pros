@@ -10,7 +10,6 @@ function Register() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [fullName, setFullName] = useState('');
-    const [accountNumber, setAccountNumber] = useState('');
     const [idNumber, setIDNumber] = useState('');
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false); // Loading state
@@ -43,19 +42,12 @@ function Register() {
         // Sanitize user inputs
         const sanitizedFullName = sanitizeInput(fullName);
         const sanitizedUsername = sanitizeInput(username);
-        const sanitizedAccountNumber = sanitizeInput(accountNumber);
         const sanitizedIDNumber = sanitizeInput(idNumber);
 
         // Validate inputs
         if (!validateUsername(sanitizedUsername)) {
             setError('Username must be 3-20 characters long and can only contain letters, numbers, and underscores.');
             setLoading(false); // Stop loading
-            return;
-        }
-
-        if (!validateAccountNumber(sanitizedAccountNumber)) {
-            setError('Account Number must consist of digits only.');
-            setLoading(false);
             return;
         }
 
@@ -74,16 +66,14 @@ function Register() {
         // Debug logs
         console.log('Sanitized Full Name:', sanitizedFullName);
         console.log('Sanitized Username:', sanitizedUsername);
-        console.log('Sanitized Account Number:', sanitizedAccountNumber);
         console.log('Sanitized ID Number:', sanitizedIDNumber);
         console.log('Password, CSRF Token:', password, csrfToken);
 
-        try {
+        /*try {
             const data = await authService.register(
                 sanitizedUsername,
                 password,
                 sanitizedFullName,
-                sanitizedAccountNumber,
                 csrfToken
             );
             // If registration is successful, navigate to the login page
@@ -94,7 +84,15 @@ function Register() {
             setError(error.message || 'Registration failed. Please try again.'); // Handle error
         } finally {
             setLoading(false); // Stop loading after request
+        }*/
+        try {
+            const data = await authService.register(sanitizedUsername, password, sanitizedFullName, sanitizedIDNumber);
+            console.log('Registration successful:', data);
+            navigate('/login');
+        } catch (error) {
+            setError(error.message || 'Registration failed. Please try again.'); // Handle error
         }
+        setLoading(false);
     };
 
     // Function to navigate to the login page
@@ -105,9 +103,9 @@ function Register() {
     return (
         <div className="registration-container">
             <div className="logo-container">
-        <img src={logo} alt="Logo" />
-        <label>Global Banking</label>
-      </div>
+                <img src={logo} alt="Logo" />
+                <label>Global Banking</label>
+            </div>
             <h2>Register</h2>
             {error && <p className="error-message">{error}</p>}
             <form onSubmit={handleSubmit} className="registration-form">
@@ -117,15 +115,6 @@ function Register() {
                         type="text"
                         value={fullName}
                         onChange={(e) => setFullName(e.target.value)}
-                        required
-                    />
-                </div>
-                <div>
-                    <label>Account Number:</label>
-                    <input
-                        type="text"
-                        value={accountNumber}
-                        onChange={(e) => setAccountNumber(e.target.value)}
                         required
                     />
                 </div>
@@ -161,9 +150,9 @@ function Register() {
                 </button>
             </form>
             <div className="additional-info">
-        <label>Already have an account?</label>
-        <a href="/login">Login here</a>
-      </div>
+                <label>Already have an account?</label>
+                <a href="/login">Login here</a>
+            </div>
         </div>
     );
 }
