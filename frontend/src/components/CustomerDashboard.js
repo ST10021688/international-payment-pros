@@ -36,7 +36,6 @@ const CustomerDashboard = () => {
         fetchUserInfo();
     }, []);
 
-
     return (
         <div className="dashboard">
             <h2>Hello, {fullName}</h2>
