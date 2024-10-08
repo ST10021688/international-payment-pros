@@ -4,7 +4,7 @@ pipeline {
     environment {
         DOCKER_IMAGE = 'payment-portal-app'
         AWS_EC2_IP = 'ec2-13-60-156-215.eu-north-1.compute.amazonaws.com'
-        SSH_KEY = 'C:\Users\lab_services_student\Downloads\jenkins (2).war'
+        SSH_KEY = 'C:/Users/lab_services_student/Downloads/jenkins (2).war'
     }
 
     stages {
