@@ -5,20 +5,21 @@ pipeline {
         DOCKER_IMAGE = 'payment-portal-app'
         AWS_EC2_IP = 'ec2-13-60-156-215.eu-north-1.compute.amazonaws.com'
         SSH_KEY = 'C:/Users/lab_services_student/Downloads/jenkins (2).war'
+        GIT_CREDENTIALS_ID = 'github-credentials' // Update to your credentials ID
     }
 
     stages {
         stage('Checkout') {
             steps {
-                // Checkout the Git repository
-                git 'https://github.com/ST10021688/international-payment-pros.git'
+                // Checkout the Git repository using credentials
+                git credentialsId: GIT_CREDENTIALS_ID, url: 'https://github.com/ST10021688/international-payment-pros.git'
             }
         }
         stage('Install Backend Dependencies') {
             steps {
                 dir('backend') {
                     sh 'npm install'
-                    sh 'npm run build' // Adjust if needed; ensure build script is available
+                    sh 'npm run build' // Ensure build script is available
                 }
             }
         }
@@ -43,7 +44,7 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                sh 'ssh -i $SSH_KEY ubuntu@$AWS_EC2_IP "docker pull $DOCKER_IMAGE && docker-compose up -d"'
+                sh 'ssh -i $SSH_KEY ubuntu@$AWS_EC2_IP "docker pull $AWS_EC2_IP:5000/$DOCKER_IMAGE && docker-compose up -d"'
             }
         }
     }
