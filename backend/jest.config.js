@@ -1,4 +1,6 @@
 module.exports = {
+  setupFilesAfterEnv: ['<rootDir>/frontend/src/setupTests.js'],
+  testEnvironment: 'jest-environment-jsdom',
   transform: {
     '^.+\\.jsx?$': 'babel-jest',
   },
@@ -6,5 +8,4 @@ module.exports = {
     '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
   },
   moduleFileExtensions: ['js', 'jsx'],
-  testEnvironment: 'jest-environment-jsdom',
 };

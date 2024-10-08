@@ -21,6 +21,7 @@ test('renders registration page when navigating to /register', () => {
       <App />
     </MemoryRouter>
   );
+  
 
   const registerHeading = screen.getByRole('heading', { name: /register/i });
   expect(registerHeading).toBeInTheDocument();

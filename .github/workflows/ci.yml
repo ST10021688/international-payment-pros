@@ -25,19 +25,35 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: Install root dependencies
-        run: npm install
+      - name: Install backend dependencies
+        run: |
+          cd backend
+          npm install
 
       - name: Install frontend dependencies
         run: |
           cd frontend
           npm install
-      - name: Run Lint
-        run: npm run lint
 
+      - name: Run Backend Lint
+        run: |
+          cd backend
+          npm run lint
 
-      - name: Run Tests
-        run: npm run test
+      - name: Run Frontend Lint
+        run: |
+          cd frontend
+          npx eslint "src/**/*.{js,jsx}" --config ../backend/eslint.config.mjs --fix
+
+      - name: Run Backend Tests
+        run: |
+          cd backend
+          npm run test
+
+      - name: Run Frontend Tests
+        run: |
+          cd frontend
+          npm run test -- --config ../backend/jest.config.js
 
       - name: Build Project
         run: |

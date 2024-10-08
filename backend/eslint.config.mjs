@@ -18,6 +18,9 @@ export default [
       parserOptions: {
         ecmaVersion: 2020, // Adjust based on your needs
         sourceType: "module", // Allow the use of imports
+        babelOptions: {
+          configFile: './babel.config.json', // Ensure Babel config is correctly referenced
+        },
       },
     },
     settings: {
