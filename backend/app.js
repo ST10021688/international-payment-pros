@@ -3,25 +3,47 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const helmet = require('helmet');
-const authRoutes = require('./routes/authRoutes'); // Adjust the path as necessary
+const cookieParser = require('cookie-parser');
+
+const authRoutes = require('./routes/authRoutes'); 
 const connectToDatabase = require('./db/conn_db');
+const csrfProtection = require('./middleware/csrfProtectionMiddleware');
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5000; 
 
 // Middleware
 app.use(helmet()); // Use helmet to secure the app by setting HTTP headers
 app.use(cors());
 app.use(express.json()); // Parse JSON request bodies
+app.use(cookieParser()); // Needed for CSRF cookie handling
 
-connectToDatabase().catch(err => {
-  console.error('Failed to connect to the database:', err);
-  process.exit(1); // Exit the process with an error code
+const corsOptions = {
+  origin: 'http://localhost:3000', // Your frontend URL
+  credentials: true, // Enable set cookie
+};
+
+app.use(cors(corsOptions)); // Apply the CORS configuration
+
+// CSRF Protection middleware for all POST, PUT, DELETE routes
+app.use(csrfProtection);
+
+// Route to get the CSRF token for frontend
+/*app.get('/api/csrf-token', (req, res) => {
+  res.json({ csrfToken: req.csrfToken() });
+});*/
+
+app.get('/api/csrf-token', csrfProtection, (req, res) => {
+  res.json({ csrfToken: req.csrfToken() }); // Send the CSRF token in the response
 });
 
-// Routes
+
+
+
+// Auth routes
 app.use('/api/auth', authRoutes); // Use authRoutes for authentication-related endpoints
 
+// Root route
 app.get('/', (req, res) => {
   res.send('API is running...');
 });
@@ -30,6 +52,12 @@ app.get('/', (req, res) => {
 app.use((err, req, res) => {
   console.error(err.stack);
   res.status(500).send('Something broke!');
+});
+
+// Connect to the database
+connectToDatabase().catch(err => {
+  console.error('Failed to connect to the database:', err);
+  process.exit(1); // Exit the process with an error code
 });
 
 // Start the server

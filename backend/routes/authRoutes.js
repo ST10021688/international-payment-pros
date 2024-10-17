@@ -1,6 +1,7 @@
 const express = require('express');
 const authController = require('../controllers/authController'); // Import your authController
 const router = express.Router();
+const csrfProtection = require('../middleware/csrfProtectionMiddleware'); // Assuming csrfProtection is in the middleware folder
 const rateLimiter = require('../middleware/rateLimiterMiddleware'); // Adjust the path as necessary
 const User = require('../models/User');
 const checkAuth = require('../middleware/checkAuth'); // Middleware to check JWT token
@@ -8,8 +9,11 @@ const Account = require('../models/Account'); // Adjust the path if necessary
 const Transaction = require('../models/Transaction'); 
 
 
+
 // User registration route
-router.post('/register', rateLimiter, authController.register); // This calls the register function in authController
+//router.post('/register', rateLimiter, authController.register); // This calls the register function in authController
+
+router.post('/register', csrfProtection, rateLimiter, authController.register); // Add CSRF protection middleware
 
 // User login route
 router.post('/login', rateLimiter, authController.login); // This calls the login function in authController

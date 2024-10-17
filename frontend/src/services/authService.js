@@ -2,8 +2,19 @@
 import axios from 'axios';
 
 const API_URL = 'http://localhost:5000/api/auth'; // Adjust this to your backend URL
-/*
-const register = async (username, password, fullName, accountNumber, idNumber, csrfToken) => {
+
+const getCsrfToken = async () => {
+  try {
+    const response = await axios.get(`http://localhost:5000/api/csrf-token`, {
+      withCredentials: true, // This ensures cookies are sent
+    });
+    return response.data; // This should return the CSRF token data
+  } catch (error) {
+    throw new Error('Failed to fetch CSRF token'); // Handle error
+  }
+};
+
+const register = async (username, password, fullName, idNumber, csrfToken) => {
   try {
     const response = await axios.post(`${API_URL}/register`, {
       username,
@@ -12,15 +23,17 @@ const register = async (username, password, fullName, accountNumber, idNumber, c
       idNumber,
     }, {
       headers: {
-        'X-CSRF-Token': csrfToken // Include the CSRF token in the headers
-      }
+        'X-CSRF-Token': csrfToken, // Add the CSRF token to the request headers
+      },
+      withCredentials: true, // Ensure cookies are sent
     });
     return response.data; // Return the response data (e.g., user info)
   } catch (error) {
     throw error.response.data; // Throw an error if the request fails
   }
 };
-*/
+
+/*
 const register = async (username, password, fullName, idNumber) => {
   try {
     const response = await axios.post(`${API_URL}/register`, {
@@ -33,7 +46,7 @@ const register = async (username, password, fullName, idNumber) => {
   } catch (error) {
     throw error.response.data; // Throw an error if the request fails
   }
-};
+};*/
 
 const login = async (username, password) => {
   try {
@@ -105,6 +118,7 @@ const getTransactions = async (token) => {
 };
 
 const authService = {
+  getCsrfToken,
   login,
   register,
   getUserInfo,

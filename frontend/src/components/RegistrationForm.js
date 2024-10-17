@@ -18,20 +18,17 @@ function Register() {
 
     useEffect(() => {
         const fetchCsrfToken = async () => {
-            try {
-                const response = await fetch('/api/csrf-token', {
-                    method: 'GET',
-                    credentials: 'include' // Include credentials for cookies
-                });
-                const data = await response.json();
-                console.log('CSRF token:', data.csrfToken);
-                setCsrfToken(data.csrfToken); // Set CSRF token from server
-            } catch (error) {
-                console.error('Failed to fetch CSRF token:', error);
-            }
+          try {
+            const data = await authService.getCsrfToken();
+            console.log('CSRF Token:', data.csrfToken);
+            setCsrfToken(data.csrfToken); // Set the token in the state
+          } catch (error) {
+            console.error('Failed to fetch CSRF token:', error);
+          }
         };
         fetchCsrfToken();
-    }, []);
+      }, []);
+      
 
     // Handles form submission
     const handleSubmit = async (e) => {
@@ -85,8 +82,9 @@ function Register() {
         } finally {
             setLoading(false); // Stop loading after request
         }*/
+
         try {
-            const data = await authService.register(sanitizedUsername, password, sanitizedFullName, sanitizedIDNumber);
+            const data = await authService.register(sanitizedUsername, password, sanitizedFullName, sanitizedIDNumber, csrfToken);
             console.log('Registration successful:', data);
             navigate('/login');
         } catch (error) {
