@@ -1,5 +1,6 @@
 // backend/services/authService.js
 const bcrypt = require('bcrypt');
+const crypto = require('crypto'); // For STRONG token IDS
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const Account = require('../models/Account');
@@ -59,7 +60,8 @@ const registerUser = async (userData) => {
   }
 };
 
-const JWT_SECRET = "mytestsecret123";
+// generates STRONG token ID
+const JWT_SECRET = crypto.randomBytes(64).toString('hex'); 
 
 // Function to log in a user
 const loginUser = async (username, password) => {
