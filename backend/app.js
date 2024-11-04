@@ -78,6 +78,22 @@ app.use(express.json()); // Parse JSON request bodies
 app.use(cookieParser()); // Use cookie-parser
 app.use(csrfProtection); // Use CSRF protection middleware
 
+
+// Bonus Helmet configurations
+app.use(helmet.frameguard({ action: 'deny' })); // Clickjacking protection
+app.use(helmet.xssFilter());                    // Cross site scripting(XSS) protection
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      "frame-ancestors": ["'self'"], // Restricts iframes to the same origin (prevents clickjacking)
+      defaultSrc: ["'self'"],         // Allows resources to load only from the same origin
+      scriptSrc: ["'self'"],          // Restricts JavaScript to the same origin
+      objectSrc: ["'none'"],          // Blocks embedding plugins or other risky objects
+    },
+  })
+);
+app.use(helmet.hsts({ maxAge: 31536000, includeSubDomains: true })); // HSTS for MITM protection
+
 connectToDatabase().catch(err => {
   console.error('Failed to connect to the database:', err);
   process.exit(1); // Exit the process with an error code
