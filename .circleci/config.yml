@@ -1,5 +1,3 @@
-# This config was automatically generated from your source code
-# Stacks detected: cicd:github-actions:.github/workflows,cicd:jenkins:.,deps:node:frontend
 version: 2.1
 orbs:
   node: circleci/node@5
@@ -16,6 +14,7 @@ jobs:
       - run:
           name: Run tests
           command: npm test --passWithNoTests
+
   build-node:
     # Build node project
     executor: node/default
@@ -37,6 +36,29 @@ jobs:
       - store_artifacts:
           path: ~/artifacts
           destination: node-build
+
+  sonarcloud:
+    # SonarCloud analysis job
+    docker:
+      - image: circleci/openjdk:11-jdk  # Java is required for sonar-scanner
+    working_directory: ~/project
+    steps:
+      - checkout
+      - run:
+          name: Install SonarScanner
+          command: |
+            curl -sSLo sonar-scanner-cli.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-linux.zip
+            unzip sonar-scanner-cli.zip -d $HOME
+            export PATH=$HOME/sonar-scanner-4.6.2.2472-linux/bin:$PATH
+      - run:
+          name: Run SonarCloud Analysis
+          command: |
+            sonar-scanner \
+              -Dsonar.projectKey=your_project_key \
+              -Dsonar.organization=your_organization \
+              -Dsonar.host.url=https://sonarcloud.io \
+              -Dsonar.login=$SONAR_TOKEN
+
   deploy:
     # This is an example deploy job, not actually used by the workflow
     docker:
@@ -52,6 +74,7 @@ jobs:
       - run:
           name: found jenkins config
           command: ':'
+
 workflows:
   build-and-test:
     jobs:
@@ -59,6 +82,9 @@ workflows:
       - build-node:
           requires:
             - test-node
+      - sonarcloud:
+          requires:
+            - build-node
     # - deploy:
     #     requires:
     #       - build-node
