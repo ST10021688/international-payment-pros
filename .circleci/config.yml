@@ -1,11 +1,12 @@
 version: 2.1
 orbs:
-  node: circleci/node@5
+  node: circleci/node@5  # Node.js orb for Node-specific jobs
+
 jobs:
   test-node:
-    # Install node dependencies and run tests
+    # Frontend test job
     executor: node/default
-    working_directory: ~/international-payment-pros
+    working_directory: ~/international-payment-pros/frontend
     steps:
       - checkout:
           path: ~/international-payment-pros
@@ -16,20 +17,20 @@ jobs:
           command: npm test --passWithNoTests
 
   build-node:
-    # Build node project
+    # Build Node project for frontend
     executor: node/default
-    working_directory: ~/international-payment-pros
+    working_directory: ~/international-payment-pros/frontend
     steps:
       - checkout:
           path: ~/international-payment-pros
       - node/install-packages:
           pkg-manager: npm
       - run:
+          name: Build project
           command: npm run build
       - run:
           name: Create the ~/artifacts directory if it doesn't exist
           command: mkdir -p ~/artifacts
-      # Copy output to artifacts dir
       - run:
           name: Copy artifacts
           command: cp -R build dist public .output .next .docusaurus ~/artifacts 2>/dev/null || true
@@ -37,7 +38,8 @@ jobs:
           path: ~/artifacts
           destination: node-build
 
-  sonarcloud:
+
+ sonarcloud:
     # SonarCloud analysis job
     docker:
       - image: circleci/openjdk:11-jdk  # Java is required for sonar-scanner
@@ -49,31 +51,20 @@ jobs:
           command: |
             curl -sSLo sonar-scanner-cli.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-linux.zip
             unzip sonar-scanner-cli.zip -d $HOME
-            export PATH=$HOME/sonar-scanner-4.6.2.2472-linux/bin:$PATH
-      - run:
-          name: Run SonarCloud Analysis
-          command: |
-            sonar-scanner \
+            export PATH=$HOME/sonar-scanner-4.6.2.2472-linux/bin:$PATH && sonar-scanner \
               -Dsonar.projectKey=ST10021688_international-payment-pros \
               -Dsonar.organization=st10021688 \
               -Dsonar.host.url=https://sonarcloud.io \
               -Dsonar.login=$3744a1f613fd4fcef9487e8a57032fa5fb397c13
 
   deploy:
-    # This is an example deploy job, not actually used by the workflow
+    # Placeholder for deployment steps
     docker:
       - image: cimg/base:stable
     steps:
-      # Replace this with steps to deploy to users
       - run:
           name: deploy
-          command: '#e.g. ./deploy.sh'
-      - run:
-          name: found github actions config
-          command: ':'
-      - run:
-          name: found jenkins config
-          command: ':'
+          command: '# e.g., ./deploy.sh'
 
 workflows:
   build-and-test:
@@ -85,6 +76,7 @@ workflows:
       - sonarcloud:
           requires:
             - build-node
-    # - deploy:
-    #     requires:
-    #       - build-node
+    # Uncomment the lines below to enable deployment after build
+     - deploy:
+         requires:
+           - build-node
