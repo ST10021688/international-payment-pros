@@ -5,10 +5,10 @@ jobs:
   test-node:
     # Install node dependencies and run tests
     executor: node/default
-    working_directory: ~/project/frontend
+    working_directory: ~/international-payment-pros/backend
     steps:
       - checkout:
-          path: ~/project
+          path: ~/international-payment-pros
       - node/install-packages:
           pkg-manager: npm
       - run:
@@ -18,10 +18,10 @@ jobs:
   build-node:
     # Build node project
     executor: node/default
-    working_directory: ~/project/frontend
+    working_directory: ~/international-payment-pros/frontend
     steps:
       - checkout:
-          path: ~/project
+          path: ~/international-payment-pros
       - node/install-packages:
           pkg-manager: npm
       - run:
