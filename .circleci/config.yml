@@ -5,7 +5,7 @@ jobs:
   test-node:
     # Install node dependencies and run tests
     executor: node/default
-    working_directory: ~/international-payment-pros/backend
+    working_directory: ~/international-payment-pros
     steps:
       - checkout:
           path: ~/international-payment-pros
@@ -18,7 +18,7 @@ jobs:
   build-node:
     # Build node project
     executor: node/default
-    working_directory: ~/international-payment-pros/frontend
+    working_directory: ~/international-payment-pros
     steps:
       - checkout:
           path: ~/international-payment-pros
@@ -41,7 +41,7 @@ jobs:
     # SonarCloud analysis job
     docker:
       - image: circleci/openjdk:11-jdk  # Java is required for sonar-scanner
-    working_directory: ~/project
+    working_directory: ~/international-payment-pros
     steps:
       - checkout
       - run:
@@ -54,10 +54,10 @@ jobs:
           name: Run SonarCloud Analysis
           command: |
             sonar-scanner \
-              -Dsonar.projectKey=your_project_key \
-              -Dsonar.organization=your_organization \
+              -Dsonar.projectKey=ST10021688_international-payment-pros \
+              -Dsonar.organization=st10021688 \
               -Dsonar.host.url=https://sonarcloud.io \
-              -Dsonar.login=$SONAR_TOKEN
+              -Dsonar.login=$3744a1f613fd4fcef9487e8a57032fa5fb397c13
 
   deploy:
     # This is an example deploy job, not actually used by the workflow
