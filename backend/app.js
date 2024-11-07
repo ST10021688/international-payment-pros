@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /*require('dotenv').config(); // Load environment variables
 const express = require('express');
 const mongoose = require('mongoose');
@@ -49,21 +50,28 @@ process.on('SIGINT', async () => {
 });
 */
 
+=======
+>>>>>>> 468b49c (Register page is fixed)
 require('dotenv').config(); // Load environment variables
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const helmet = require('helmet');
+<<<<<<< HEAD
 const csrfProtection = require('./middleware/csrfProtectionMiddleware'); 
 const cookieParser = require('cookie-parser');
 const authRoutes = require('./routes/authRoutes'); 
 const connectToDatabase = require('./db/conn_db');
 const https = require('https'); // Include https module
 const fs = require('fs'); // File system to read SSL certificates
+=======
+const authRoutes = require('./routes/authRoutes'); // Adjust the path as necessary
+>>>>>>> 468b49c (Register page is fixed)
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+<<<<<<< HEAD
 // SSL Config: Load your SSL certificates
 const sslOptions = {
   key: fs.readFileSync('./keys/server.key'), 
@@ -71,10 +79,13 @@ const sslOptions = {
   ca: fs.readFileSync('./keys/myCA.pem') 
 };
 
+=======
+>>>>>>> 468b49c (Register page is fixed)
 // Middleware
 app.use(helmet()); // Use helmet to secure the app by setting HTTP headers
 app.use(cors());
 app.use(express.json()); // Parse JSON request bodies
+<<<<<<< HEAD
 app.use(cookieParser()); // Use cookie-parser
 app.use(csrfProtection); // Use CSRF protection middleware
 
@@ -103,6 +114,29 @@ connectToDatabase().catch(err => {
 app.get('/api/csrf-token', (req, res) => {
   res.json({ csrfToken: req.csrfToken() });
 });
+=======
+
+
+// Hardcoded MongoDB URI for testing
+const MONGODB_URI = "mongodb+srv://jrussellmmii:b5lmCUuycTA0ZNb8@apds-cluster.xqu4gnm.mongodb.net/APDS7311_POE?retryWrites=true&w=majority";
+
+// Debugging: Check if MongoDB URI is defined
+console.log('MongoDB URI:', process.env.MONGODB_URI);
+
+const connectDB = async () => {
+  try {
+    console.log('MongoDB URI:', MONGODB_URI); // Debugging output
+
+    await mongoose.connect(MONGODB_URI);
+    console.log('MongoDB connected');
+  } catch (error) {
+    console.error('MongoDB connection error:', error);
+    process.exit(1); // Exit the process if there is an error
+  }
+};
+
+connectDB(); // Call the connection function
+>>>>>>> 468b49c (Register page is fixed)
 
 // Routes
 app.use('/api/auth', authRoutes); // Use authRoutes for authentication-related endpoints
@@ -117,9 +151,15 @@ app.use((err, req, res, next) => {
   res.status(500).send('Something broke!');
 });
 
+<<<<<<< HEAD
 // Start the HTTPS server
 https.createServer(sslOptions, app).listen(PORT, () => {
   console.log(`Secure server is running on port ${PORT}`);
+=======
+// Start the server
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+>>>>>>> 468b49c (Register page is fixed)
 });
 
 // Graceful shutdown

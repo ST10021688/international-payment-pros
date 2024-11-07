@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 const csurf = require('csurf');
 
 // Setup CSRF protection middleware with secure cookie settings
@@ -9,5 +10,11 @@ const csrfProtection = csurf({
     maxAge: 60 * 60 * 1000  // Optional: Set cookie expiration time (1 hour here)
   }
 });
+=======
+const csrf = require('csurf');
+
+// Initialize CSRF protection middleware
+const csrfProtection = csrf({ cookie: true });
+>>>>>>> 468b49c (Register page is fixed)
 
 module.exports = csrfProtection;

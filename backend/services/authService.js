@@ -1,5 +1,6 @@
 // backend/services/authService.js
 const bcrypt = require('bcrypt');
+<<<<<<< HEAD
 const crypto = require('crypto'); // For STRONG token IDS
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
@@ -23,6 +24,13 @@ const generateAccountNumber = async () => {
 // Function to register a new user
 const registerUser = async (userData) => {
   const { firstName, lastName, email, username, password, idNumber } = userData;
+=======
+const jwt = require('jsonwebtoken');
+const User = require('../models/User');
+
+const registerUser = async (userData) => {
+  const { username, password, fullName, accountNumber } = userData;
+>>>>>>> 468b49c (Register page is fixed)
 
   try {
     const existingUser = await User.findOne({ username });
@@ -33,6 +41,7 @@ const registerUser = async (userData) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const newUser = new User({
+<<<<<<< HEAD
       firstName, 
       lastName, 
       email,
@@ -56,10 +65,22 @@ const registerUser = async (userData) => {
     return { message: 'User registered successfully', user: newUser };
   } catch (error) {
     console.error('Registration failed:', error); // Log the error for debugging
+=======
+      username,
+      password: hashedPassword,
+      fullName,
+      accountNumber,
+    });
+
+    await newUser.save();
+    return { message: 'User registered successfully', user: newUser };
+  } catch (error) {
+>>>>>>> 468b49c (Register page is fixed)
     throw new Error('Registration failed: ' + error.message);
   }
 };
 
+<<<<<<< HEAD
 // generates STRONG token ID
 const JWT_SECRET = crypto.randomBytes(64).toString('hex'); 
 
@@ -89,6 +110,17 @@ const loginUser = async (username, password) => {
     console.error('Login failed:', error);
     throw new Error('Login failed: ' + error.message);
   }
+=======
+const loginUser = async (username, password) => {
+  const user = await User.findOne({ username });
+  if (!user) throw new Error('No matching User found');
+
+  const isMatch = await bcrypt.compare(password, user.password);
+  if (!isMatch) throw new Error('Incorrect password');
+
+  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+  return token;
+>>>>>>> 468b49c (Register page is fixed)
 };
 
 module.exports = { registerUser, loginUser };
