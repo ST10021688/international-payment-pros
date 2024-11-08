@@ -23,11 +23,11 @@ function Register() {
             try {
                 const response = await fetch('/api/csrf-token', {
                     method: 'GET',
-                    credentials: 'include' // Include credentials for cookies
+                    credentials: 'include' // Ensure cookies are sent for CSRF validation
                 });
                 const data = await response.json();
-                console.log('CSRF token:', data.csrfToken);
-                setCsrfToken(data.csrfToken); // Set CSRF token from server
+                console.log('CSRF token:', data.csrfToken); // Check if CSRF token is received
+                setCsrfToken(data.csrfToken); // Make sure the token is being set in state
             } catch (error) {
                 console.error('Failed to fetch CSRF token:', error);
             }
@@ -72,7 +72,8 @@ function Register() {
         console.log('Email Address:', emailAddress);
         console.log('Sanitized Username:', sanitizedUsername);
         console.log('Sanitized ID Number:', sanitizedIDNumber);
-        console.log('Password, CSRF Token:', password, csrfToken);
+        console.log('Password', password);
+        console.log('CSRF Token:', csrfToken);
 
         try {
             const data = await authService.register(
@@ -81,7 +82,7 @@ function Register() {
                 emailAddress,
                 sanitizedUsername,
                 password,
-                csrfToken
+                csrfToken  // Pass CSRF token in headers
             );
             // If registration is successful, navigate to the login page
             if (data) {

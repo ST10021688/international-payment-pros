@@ -5,21 +5,28 @@ const API_URL = 'http://localhost:5000/api/auth'; // Adjust this to your backend
 
 const register = async (firstName, lastName, email, username, password, idNumber, csrfToken) => {
   try {
-    const response = await axios.post(`${API_URL}/register`, {
-      firstName, 
-      lastName, 
-      email,
-      username,
-      password,
-      idNumber,
-    }, {
-      headers: {
-        'X-CSRF-Token': csrfToken // Include the CSRF token in the headers
+    const response = await axios.post(
+      `${API_URL}/register`,
+      {
+        firstName, 
+        lastName, 
+        email,
+        username,
+        password,
+        idNumber,
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json', // Explicitly set content type
+          'X-CSRF-Token': csrfToken,          // Include the CSRF token in the headers
+        },
+        withCredentials: true, // Ensure cookies are sent along with the request
       }
-    });
+    );
     return response.data; // Return the response data (e.g., user info)
   } catch (error) {
-    throw error.response.data; // Throw an error if the request fails
+    // Handle and throw a more descriptive error message
+    throw error.response?.data?.message || 'An error occurred during registration';
   }
 };
 
