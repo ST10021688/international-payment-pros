@@ -3,12 +3,11 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const helmet = require('helmet');
-const csrfProtection = require('./middleware/csrfProtectionMiddleware');
+const https = require('https');
+const fs = require('fs');
 const cookieParser = require('cookie-parser');
+const csrfProtection = require('./middleware/csrfProtectionMiddleware');
 const authRoutes = require('./routes/authRoutes');
-const connectToDatabase = require('./db/conn_db');
-const https = require('https'); // Include https module
-const fs = require('fs'); // File system to read SSL certificates
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -21,43 +20,31 @@ const sslOptions = {
 };
 
 // Middleware
-app.use(helmet()); // Use helmet to secure the app by setting HTTP headers
+app.use(helmet());
 app.use(cors());
-app.use(express.json()); // Parse JSON request bodies
-app.use(cookieParser()); // Use cookie-parser for handling CSRF cookies
-app.use(csrfProtection); // Use CSRF protection middleware
+app.use(express.json());
+app.use(cookieParser());
+app.use(csrfProtection);
 
-// Additional Helmet configurations for security
-app.use(helmet.frameguard({ action: 'deny' })); // Clickjacking protection
-app.use(helmet.xssFilter());                    // XSS protection
-app.use(
-  helmet.contentSecurityPolicy({
-    directives: {
-      "frame-ancestors": ["'self'"], // Restricts iframes to the same origin
-      defaultSrc: ["'self'"],        // Restrict resources to the same origin
-      scriptSrc: ["'self'"],         // Restrict JavaScript to the same origin
-      objectSrc: ["'none'"],         // Blocks risky plugins or objects
-    },
-  })
-);
-app.use(helmet.hsts({ maxAge: 31536000, includeSubDomains: true })); // HSTS for HTTPS-only
+// Database connection
+const connectDB = async () => {
+  try {
+    await mongoose.connect(process.env.MONGODB_URI);
+    console.log('MongoDB connected');
+  } catch (error) {
+    console.error('MongoDB connection error:', error);
+    process.exit(1);
+  }
+};
 
-// Connect to MongoDB
-connectToDatabase().catch(err => {
-  console.error('Failed to connect to the database:', err);
-  process.exit(1); // Exit the process if there is an error
-});
+connectDB();
+
+// Routes
+app.use('/api/auth', authRoutes);
 
 // Route to get CSRF token
 app.get('/api/csrf-token', (req, res) => {
   res.json({ csrfToken: req.csrfToken() });
-});
-
-// Routes
-app.use('/api/auth', authRoutes); // Use authRoutes for authentication-related endpoints
-
-app.get('/', (req, res) => {
-  res.send('API is running...');
 });
 
 // Error handling middleware
@@ -66,7 +53,7 @@ app.use((err, req, res, next) => {
   res.status(500).send('Something broke!');
 });
 
-// Start the HTTPS server
+// Start the server
 https.createServer(sslOptions, app).listen(PORT, () => {
   console.log(`Secure server is running on port ${PORT}`);
 });

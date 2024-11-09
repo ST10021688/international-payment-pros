@@ -1,7 +1,7 @@
-const csrf = require('csurf');
+const csurf = require('csurf');
 
-// Initialize CSRF protection middleware with secure cookie settings
-const csrfProtection = csrf({
+// Setup CSRF protection middleware with secure cookie settings
+const csrfProtection = csurf({
   cookie: {
     httpOnly: true,         // Prevents JavaScript access to the CSRF cookie
     secure: process.env.NODE_ENV === 'production', // Only send over HTTPS in production

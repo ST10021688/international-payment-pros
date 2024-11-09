@@ -4,7 +4,6 @@ import { MemoryRouter } from 'react-router-dom';
 import '@testing-library/jest-dom'; // Correct import for jest-dom
 import App from './App';
 
-// Test for the login page rendering by default
 test('renders login page by default', () => {
   render(
     <MemoryRouter initialEntries={['/']}>
@@ -16,7 +15,6 @@ test('renders login page by default', () => {
   expect(loginHeading).toBeInTheDocument();
 });
 
-// Test for the registration page rendering when navigating to /register
 test('renders registration page when navigating to /register', () => {
   render(
     <MemoryRouter initialEntries={['/register']}>

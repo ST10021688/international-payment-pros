@@ -1,33 +1,30 @@
+// frontend/src/components/RegistrationForm.js
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import authService from '../services/authService';
-import { sanitizeInput, validateUsername, validateIDNumber, validatePassword } from '../middleware/inputSanitizer';
-import './RegistrationForm.css';
-import logo from '../assets/images/bank-logo.png';
+import sanitizeInput from '../middleware/inputSanitizer';
+import './RegistrationForm.css'; // Import the CSS file for styles
+import logo from '../assets/images/bank-logo.png'; // Import the logo image
 
 function Register() {
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
-    const [emailAddress, setEmailAddress] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [idNumber, setIDNumber] = useState('');
+    const [fullName, setFullName] = useState('');
     const [accountNumber, setAccountNumber] = useState('');
-    const [csrfToken, setCsrfToken] = useState('');
-    const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-
-    const navigate = useNavigate();
+    const [loading, setLoading] = useState(false); // Loading state
+    const [csrfToken, setCsrfToken] = useState(''); // State for CSRF token
+    const navigate = useNavigate(); // Use useNavigate for redirection
 
     useEffect(() => {
         const fetchCsrfToken = async () => {
             try {
                 const response = await fetch('/api/csrf-token', {
                     method: 'GET',
-                    credentials: 'include'
+                    credentials: 'include' // Include credentials for cookies
                 });
                 const data = await response.json();
-                setCsrfToken(data.csrfToken);
+                setCsrfToken(data.csrfToken); // Set CSRF token from server
             } catch (error) {
                 console.error('Failed to fetch CSRF token:', error);
             }
@@ -36,54 +33,38 @@ function Register() {
         fetchCsrfToken();
     }, []);
 
+    // Handles form submission
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setError(null);
-        setLoading(true);
+        setError(null); // Reset error state
+        setLoading(true); // Start loading
 
-        const sanitizedFirstName = sanitizeInput(firstName);
-        const sanitizedLastName = sanitizeInput(lastName);
+        // Sanitize user inputs
+        const sanitizedFullName = sanitizeInput(fullName);
         const sanitizedUsername = sanitizeInput(username);
-        const sanitizedIDNumber = sanitizeInput(idNumber);
         const sanitizedAccountNumber = sanitizeInput(accountNumber);
 
-        if (!validateUsername(sanitizedUsername)) {
-            setError('Username must be 3-20 characters long and can only contain letters, numbers, and underscores.');
-            setLoading(false);
-            return;
-        }
-
-        if (!validateIDNumber(sanitizedIDNumber)) {
-            setError('ID Number must consist of digits only.');
-            setLoading(false);
-            return;
-        }
-
-        if (!validatePassword(password)) {
-            setError('Password must be at least 8 characters long, include an uppercase letter, a lowercase letter, a digit, and a special character.');
-            setLoading(false);
-            return;
-        }
+        console.log('Sanitized Full Name:', sanitizedFullName);
+        console.log('Sanitized Username:', sanitizedUsername);
+        console.log('Sanitized Account Number:', sanitizedAccountNumber);
+        console.log('Password, CSRF Token:', password, csrfToken);
 
         try {
             const data = await authService.register(
-                sanitizedFirstName,
-                sanitizedLastName,
-                emailAddress,
                 sanitizedUsername,
                 password,
-                sanitizedIDNumber,
+                sanitizedFullName,
                 sanitizedAccountNumber,
-                csrfToken
+                csrfToken // Include CSRF token in the request
             );
-
+            // If registration is successful, navigate to the login page
             if (data) {
-                navigate('/login');
+                navigate('/login'); // Redirect to the login page
             }
         } catch (error) {
-            setError(error.message || 'Registration failed. Please try again.');
+            setError(error.message || 'Registration failed. Please try again.'); // Handle error
         } finally {
-            setLoading(false);
+            setLoading(false); // Stop loading after request
         }
     };
 
@@ -94,35 +75,43 @@ function Register() {
                 <label>Global Banking</label>
             </div>
             <h2>Register</h2>
-            {error && <p className="error-message">{error}</p>}
-            <form onSubmit={handleSubmit} className="registration-form">
+            {error && <p style={{ color: 'red' }}>{error}</p>}
+            <form onSubmit={handleSubmit}>
                 <div>
-                    <label>First Name:</label>
-                    <input type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)} required />
-                </div>
-                <div>
-                    <label>Last Name:</label>
-                    <input type="text" value={lastName} onChange={(e) => setLastName(e.target.value)} required />
-                </div>
-                <div>
-                    <label>Email Address:</label>
-                    <input type="text" value={emailAddress} onChange={(e) => setEmailAddress(e.target.value)} required />
-                </div>
-                <div>
-                    <label>ID Number:</label>
-                    <input type="text" value={idNumber} onChange={(e) => setIDNumber(e.target.value)} required />
+                    <label>Full Name:</label>
+                    <input
+                        type="text"
+                        value={fullName}
+                        onChange={(e) => setFullName(e.target.value)}
+                        required
+                    />
                 </div>
                 <div>
                     <label>Account Number:</label>
-                    <input type="text" value={accountNumber} onChange={(e) => setAccountNumber(e.target.value)} required />
+                    <input
+                        type="text"
+                        value={accountNumber}
+                        onChange={(e) => setAccountNumber(e.target.value)}
+                        required
+                    />
                 </div>
                 <div>
                     <label>Username:</label>
-                    <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} required />
+                    <input
+                        type="text"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        required
+                    />
                 </div>
                 <div>
                     <label>Password:</label>
-                    <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+                    <input
+                        type="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                    />
                 </div>
                 <button type="submit" disabled={loading}>
                     {loading ? 'Registering...' : 'Register'}
