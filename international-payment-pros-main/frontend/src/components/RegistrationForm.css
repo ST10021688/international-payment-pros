@@ -1,0 +1,135 @@
+/* frontend/src/components/RegistrationForm.css */
+body {
+    display: flex;
+    justify-content: flex-start; /* Align items to the left */
+    align-items: center; /* Center items vertically */
+    height: 100vh; /* Ensure the body takes the full height of the viewport */
+    margin: 0; /* Remove default margin */
+    background: url('../assets/images/sign-up-bg.svg') no-repeat center center fixed;
+    background-size: cover;
+    position: relative; /* Enable positioning of child elements */
+}
+
+.registration-container {
+    background-color: rgba(46, 46, 46, 0.8); /* Semi-transparent background */
+    color: #ffffff;
+    padding: 20px;
+    padding-top: 5px;
+    border-radius: 8px;
+    max-width: 400px;
+    width: 100%; /* Ensure it takes the full width up to max-width */
+    margin-left: 80px; /* Add some margin to the left */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    margin-bottom: 100px;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.registration-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center items horizontally */
+}
+
+.registration-form div {
+    margin-bottom: 15px;
+    width: 100%; /* Ensure div takes full width */
+    display: flex;
+    flex-direction: column; /* Stack label and input vertically */
+    align-items: center; /* Center the input and button */}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    background-color: #333; /* Dark input fields */
+    color: #fff; /* White text in input fields */
+    transition: background-color 0.3s;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+    background-color: #444; /* Slightly lighter on focus */
+    outline: none;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff; /* Button background color */
+    border: none;
+    border-radius: 4px;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+.error-message {
+    color: #ff4c4c; /* Error message color */
+    margin-bottom: 20px;
+}
+
+/* New styles for logo and label */
+.logo-container {
+    position: absolute;
+    top: 60px;
+    right: 60px;
+    display: flex;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.5); /* Semi-transparent white */
+    backdrop-filter: blur(10px); /* Apply blur effect */
+        padding: 10px;
+    padding-left: 0px;
+    border-radius: 16px;
+}
+
+.logo-container img {
+    max-width: 100px;
+}
+
+.logo-container label {
+    color: #0F225E;
+    font-size: 36px;
+    font-weight: bold;
+    margin-right: 5px;
+    margin-top: 5px;
+}
+
+
+/* New styles for additional info */
+.additional-info {
+    display: flex !important; /* Ensure flexbox layout */
+    flex-direction: column !important; /* Stack items vertically */
+    justify-content: center !important; /* Center items horizontally */
+    align-items: center !important; /* Center items vertically */
+    margin-top: 20px !important; /* Add space above the container */
+    width: auto !important; /* Ensure it takes only the necessary width */
+}
+
+.additional-info label {
+    margin-bottom: 5px !important; /* Add space below the label */
+    text-align: center !important; /* Center text */
+}
+.additional-info a {
+    color: #92E2F9 !important;
+    text-decoration: none !important;
+}
+
+.additional-info a:hover {
+    text-decoration: underline !important;
+}
