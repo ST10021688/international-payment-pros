@@ -99,6 +99,16 @@ const rejectTransaction = async (transactionId) => {
   }
 };
 
+const getUserDetails = async (userId) => {
+  try {
+    const response = await axios.get(`${API_URL}/users/${userId}`);
+    return response.data; // Return the user details
+  } catch (error) {
+    console.error('Error fetching user details:', error.response.data);
+    throw error.response.data; // Throw an error if the request fails
+  }
+};
+
 //---------------------------------------------------------------------------------------------------------//
 const authService = {
   login,
@@ -109,6 +119,7 @@ const authService = {
   getAllTransactions,
   validateTransaction,
   rejectTransaction,
+  getUserDetails,
 };
 
 export default authService;

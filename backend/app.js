@@ -6,6 +6,7 @@ const helmet = require('helmet');
 const authRoutes = require('./routes/authRoutes'); 
 const accountRoutes = require('./routes/accountRoutes'); 
 const transactionRoutes = require('./routes/transactionRoutes'); 
+const userRoutes = require('./routes/userRoutes');
 const connectToDatabase = require('./db/conn_db');
 const https = require('https'); // Include https module
 const fs = require('fs'); // File system to read SSL certificates
@@ -49,6 +50,7 @@ connectToDatabase().catch(err => {
 app.use('/api/auth', authRoutes);
 app.use('/api/accounts', accountRoutes);
 app.use('/api/transactions', transactionRoutes);
+app.use('/api/users', userRoutes);
 
 app.get('/', (req, res) => {
   res.send('API is running...');

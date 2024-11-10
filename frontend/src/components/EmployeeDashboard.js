@@ -4,12 +4,23 @@ import './EmployeeDashboard.css';
 
 const EmployeeDashboard = () => {
   const [transactions, setTransactions] = useState([]);
+  const [users, setUsers] = useState({});
 
   useEffect(() => {
     const fetchTransactions = async () => {
       try {
         const response = await authService.getAllTransactions();
-        setTransactions(response);
+        const internationalTransactions = response.filter(transaction => transaction.transactionType === 'International');
+        setTransactions(internationalTransactions);
+
+        // Fetch user details for each transaction
+        const userIds = [...new Set(internationalTransactions.map(transaction => transaction.userId))];
+        const userDetails = await Promise.all(userIds.map(id => authService.getUserDetails(id)));
+        const usersMap = userDetails.reduce((acc, user) => {
+          acc[user._id] = user;
+          return acc;
+        }, {});
+        setUsers(usersMap);
       } catch (error) {
         console.error('Error fetching transactions:', error);
       }
@@ -54,7 +65,7 @@ const EmployeeDashboard = () => {
           {transactions.map(transaction => (
             <tr key={transaction._id}>
               <td>{new Date(transaction.date).toLocaleDateString()}</td>
-              <td>{transaction.userId}</td>
+              <td>{users[transaction.userId]?.firstName} {users[transaction.userId]?.lastName}</td>
               <td>{transaction.recipientName}</td>
               <td>${transaction.amountToTransfer}</td>
               <td>{transaction.status}</td>
