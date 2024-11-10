@@ -1,8 +1,8 @@
 // frontend/src/components/PaymentForm.js
 import React, { useState, useContext } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import axios from 'axios';
 import { UserContext } from '../UserContext';
+import authService from '../services/authService';
 import './PaymentForm.css';
 
 const PaymentForm = () => {
@@ -11,17 +11,21 @@ const PaymentForm = () => {
   const { paymentType } = location.state || {};
   const { user } = useContext(UserContext);
   const userId = user?.userId;
-  const [paymentDetails, setPaymentDetails] = useState({
+
+  const [transactionData, setTransactionData] = useState({
     recipientName: '',
-    recipientBank: '',
-    recipientAccountNumber: '',
+    recipientsBank: '',
+    recipientsAccountNumber: '',
     amountToTransfer: '',
-    swiftCode: ''
+    swiftCode: '',
+    transactionType: paymentType,
+    status: 'Pending',
+    date: new Date().toISOString()
   });
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setPaymentDetails((prevDetails) => ({
+    setTransactionData((prevDetails) => ({
       ...prevDetails,
       [name]: value
     }));
@@ -29,13 +33,20 @@ const PaymentForm = () => {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
+    console.log('Submitting transaction data:', {
+      ...transactionData,
+      userId
+    });
     try {
-      await axios.post('/api/payments', {
-        ...paymentDetails,
-        userId,
-        paymentType
+      const data = await authService.createTransaction({
+        ...transactionData,
+        userId
       });
-      navigate('/dashboard');
+      console.log('Transaction created successfully:', data);
+
+      if (data) {
+        navigate('/dashboard');
+      }
     } catch (error) {
       console.error('Error making payment:', error);
     }
@@ -43,14 +54,14 @@ const PaymentForm = () => {
 
   return (
     <div className="payment-form-container">
-      <h3>{paymentType === 'local' ? 'Local Payment' : 'International Payment'}</h3>
+      <h3>{paymentType === 'Local' ? 'Local Payment' : 'International Payment'}</h3>
       <form onSubmit={handleFormSubmit}>
         <div>
           <label>Recipient Name:</label>
           <input
             type="text"
             name="recipientName"
-            value={paymentDetails.recipientName}
+            value={transactionData.recipientName}
             onChange={handleInputChange}
             required
           />
@@ -59,8 +70,8 @@ const PaymentForm = () => {
           <label>Recipient Bank:</label>
           <input
             type="text"
-            name="recipientBank"
-            value={paymentDetails.recipientBank}
+            name="recipientsBank"
+            value={transactionData.recipientsBank}
             onChange={handleInputChange}
             required
           />
@@ -69,8 +80,8 @@ const PaymentForm = () => {
           <label>Recipient Account Number:</label>
           <input
             type="text"
-            name="recipientAccountNumber"
-            value={paymentDetails.recipientAccountNumber}
+            name="recipientsAccountNumber"
+            value={transactionData.recipientsAccountNumber}
             onChange={handleInputChange}
             required
           />
@@ -80,7 +91,7 @@ const PaymentForm = () => {
           <input
             type="number"
             name="amountToTransfer"
-            value={paymentDetails.amountToTransfer}
+            value={transactionData.amountToTransfer}
             onChange={handleInputChange}
             required
           />
@@ -91,7 +102,7 @@ const PaymentForm = () => {
             <input
               type="text"
               name="swiftCode"
-              value={paymentDetails.swiftCode}
+              value={transactionData.swiftCode}
               onChange={handleInputChange}
               required
             />

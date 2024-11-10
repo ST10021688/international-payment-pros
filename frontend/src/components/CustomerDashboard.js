@@ -1,8 +1,8 @@
 // frontend/src/components/CustomerDashboard.js
 import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { UserContext } from '../UserContext';
+import authService from '../services/authService';
 import './CustomerDashboard.css';
 
 const CustomerDashboard = () => {
@@ -17,8 +17,8 @@ const CustomerDashboard = () => {
 
     const fetchAccountDetails = async () => {
       try {
-        const response = await axios.get(`/api/accounts/${userId}`);
-        setAccountDetails(response.data);
+        const data = await authService.getAccountDetails(userId);
+        setAccountDetails(data);
       } catch (error) {
         console.error('Error fetching account details:', error);
       }
@@ -26,8 +26,8 @@ const CustomerDashboard = () => {
 
     const fetchTransactions = async () => {
       try {
-        const response = await axios.get(`/api/transactions/${userId}`);
-        setTransactions(response.data);
+        const data = await authService.getTransactions(userId);
+        setTransactions(data);
       } catch (error) {
         console.error('Error fetching transactions:', error);
       }
@@ -37,7 +37,7 @@ const CustomerDashboard = () => {
     fetchTransactions();
   }, [userId]);
 
-  const firstName = user?.fullName.split(' ')[0];
+  const firstName = user?.firstName;
 
   const handlePaymentButtonClick = (type) => {
     navigate('/payment', { state: { paymentType: type } });
@@ -59,8 +59,8 @@ const CustomerDashboard = () => {
         </div>
       </nav>
       <div className="main-actions">
-        <button className="action-button" onClick={() => handlePaymentButtonClick('local')}>Make Local Payment</button>
-        <button className="action-button" onClick={() => handlePaymentButtonClick('international')}>Make International Payment</button>
+        <button className="action-button" onClick={() => handlePaymentButtonClick('Local')}>Make Local Payment</button>
+        <button className="action-button" onClick={() => handlePaymentButtonClick('International')}>Make International Payment</button>
       </div>
       <section className="banking-details">
         <h3>Banking Details</h3>

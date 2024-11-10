@@ -1,18 +1,20 @@
 const express = require('express');
 const router = express.Router();
-const Account = require('../models/Account');
+const transactionController = require('../controllers/transactionController');
 
-// Get account details for a user
-router.get('/:userId', async (req, res) => {
-  try {
-    const account = await Account.findOne({ userId: req.params.userId });
-    if (!account) {
-      return res.status(404).json({ message: 'Account not found' });
-    }
-    res.json(account);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
+// Handle transaction request
+router.post('/', transactionController.createTransaction);
+
+// Validate transaction
+router.post('/:transactionId/validate', transactionController.validate);
+
+// Reject transaction
+router.post('/:transactionId/reject', transactionController.reject);
+
+// Get transactions for a user
+router.get('/:userId', transactionController.getTransactions);
+
+// Get all transactions
+router.get('/', transactionController.getAllTransactions);
 
 module.exports = router;

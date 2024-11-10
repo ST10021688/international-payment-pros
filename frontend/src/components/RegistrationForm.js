@@ -9,10 +9,14 @@ function Register() {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [emailAddress, setEmailAddress] = useState('');
+    const [idNumber, setIDNumber] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [idNumber, setIDNumber] = useState('');
-    const [loading, setLoading] = useState(false); // Loading state
+    const [confirmPassword, setConfirmPassword] = useState('');
+
+    const [userType, setUserType] = useState('customer'); // Default to customer
+
+    const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const navigate = useNavigate(); // Use useNavigate for redirection
 
@@ -25,8 +29,8 @@ function Register() {
         // Sanitize user inputs
         const sanitizedFirstName = sanitizeInput(firstName);
         const sanitizedLastName = sanitizeInput(lastName);
-        const sanitizedUsername = sanitizeInput(username);
         const sanitizedIDNumber = sanitizeInput(idNumber);
+        const sanitizedUsername = sanitizeInput(username);
 
         // Validate inputs
         if (!validateUsername(sanitizedUsername)) {
@@ -56,13 +60,20 @@ function Register() {
         console.log('Password:', password);
 
         try {
+            if (password !== confirmPassword) {
+                setError('Passwords do not match.'); // Handle error
+                setLoading(false); // Stop loading
+                return;
+            }
+
             const data = await authService.register(
                 sanitizedFirstName,
                 sanitizedLastName,
                 emailAddress,
+                sanitizedIDNumber,
                 sanitizedUsername,
                 password,
-                sanitizedIDNumber
+                userType
             );
             // If registration is successful, navigate to the login page
             if (data) {
@@ -78,9 +89,9 @@ function Register() {
     return (
         <div className="registration-container">
             <div className="logo-container">
-        <img src={logo} alt="Logo" />
-        <label>Global Banking</label>
-      </div>
+                <img src={logo} alt="Logo" />
+                <label>Global Banking</label>
+            </div>
             <h2>Register</h2>
             {error && <p className="error-message">{error}</p>}
             <form onSubmit={handleSubmit} className="registration-form">
@@ -138,14 +149,30 @@ function Register() {
                         required
                     />
                 </div>
+                <div>
+                    <label>Confirm Password:</label>
+                    <input
+                        type="password"
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        required
+                    />
+                </div>
+                <div>
+                    <label>User Type:</label>
+                    <select value={userType} onChange={(e) => setUserType(e.target.value)} required>
+                        <option value="customer">Customer</option>
+                        <option value="employee">Employee</option>
+                    </select>
+                </div>
                 <button type="submit" disabled={loading}>
                     {loading ? 'Registering...' : 'Register'}
                 </button>
             </form>
             <div className="additional-info">
-        <label>Already have an account?</label>
-        <a href="/login">Login here</a>
-      </div>
+                <label>Already have an account?</label>
+                <a href="/login">Login here</a>
+            </div>
         </div>
     );
 }

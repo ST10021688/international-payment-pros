@@ -7,6 +7,7 @@ import Register from './components/RegistrationForm';
 import Login from './components/LoginForm';
 import CustomerDashboard from './components/CustomerDashboard';
 import Payment from './components/PaymentForm';
+import EmployeeDashboard from './components/EmployeeDashboard';
 
 function App() {
   return (
@@ -25,6 +26,9 @@ function App() {
 
             {/* Route for the payment page */}
             <Route path="/payment" element={<Payment />} />
+
+            {/* Route for the payment page */}
+            <Route path="/employee-dashboard" element={<EmployeeDashboard />} />
 
             <Route path="/" element={<Navigate to="/login" replace />} />
           </Routes>

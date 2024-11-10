@@ -37,9 +37,13 @@ function Login() {
 
     try {
       const data = await authService.login(username, password);
-      // If login is successful, navigate to the home page
-      if (data) {
-        setUser({ userId: data.userId, firstName: data.firstName });
+
+      // If login is successful, navigate to the appropriate dashboard
+      setUser({ userId: data.userId, firstName: data.firstName, userType: data.userType });
+
+      if (data.userType === 'employee') {
+        navigate('/employee-dashboard');
+      } else {
         navigate('/dashboard');
       }
     } catch (error) {

@@ -2,7 +2,9 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
+const Employee = require('../models/Employee');
 const Account = require('../models/Account');
+const Transaction = require('../models/Transaction');
 require('dotenv').config(); // Load environment variables
 
 // Function to generate a unique bank account number
@@ -20,62 +22,81 @@ const generateAccountNumber = async () => {
   return accountNumber;
 };
 
+//---------------------------------------------------------------------------------------------------------//
 // Function to register a new user
 const registerUser = async (userData) => {
-  const { firstName, lastName, email, username, password, idNumber } = userData;
+  const { firstName, lastName, email, username, password, idNumber, userType } = userData;
 
   try {
-    const existingUser = await User.findOne({ username });
-    if (existingUser) {
-      throw new Error('Username already taken');
+    if (userType === 'employee') {
+      const existingEmployee = await Employee.findOne({ username });
+      if (existingEmployee) {
+        throw new Error('Username already taken');
+      }
+
+      const newEmployee = new Employee({
+        firstName, 
+        lastName, 
+        email,
+        username,
+        password,
+        idNumber
+      });
+
+      await newEmployee.save();
+      return { message: 'Employee registered successfully', user: newEmployee };
+    } else {
+      const existingUser = await User.findOne({ username });
+      if (existingUser) {
+        throw new Error('Username already taken');
+      }
+
+      const newUser = new User({
+        firstName, 
+        lastName, 
+        email,
+        username,
+        password,
+        idNumber
+      });
+
+      await newUser.save();
+
+      // Generate account number and create account
+      const accountNumber = await generateAccountNumber();
+      const account = new Account({
+        userId: newUser._id,
+        accountNumber,
+        balance: 0 
+      });
+
+      await account.save();
+      return { message: 'User registered successfully', user: newUser };
     }
-
-    //const hashedPassword = await bcrypt.hash(password, 10);
-
-    const salt = await bcrypt.genSalt(10);  // 10 rounds of salt
-    const hashedPassword = await bcrypt.hash(password, salt);
-
-    const newUser = new User({
-      firstName, 
-      lastName, 
-      email,
-      username,
-      password: hashedPassword,
-      idNumber,
-    });
-
-    await newUser.save();
-
-    // Generate account number and create account
-    const accountNumber = await generateAccountNumber();
-    const account = new Account({
-      userId: newUser._id,
-      accountNumber,
-      balance: 0 
-    });
-
-    await account.save();
-
-    return { message: 'User registered successfully', user: newUser };
   } catch (error) {
     console.error('Registration failed:', error); // Log the error for debugging
     throw new Error('Registration failed: ' + error.message);
   }
 };
 
+//---------------------------------------------------------------------------------------------------------//
 // Function to log in a user
 const loginUser = async (username, password) => {
   try {
-    const user = await User.findOne({ username });
+    let user = await User.findOne({ username });
+    let userType = 'customer';
+
+    if (!user) {
+      user = await Employee.findOne({ username });
+      userType = 'employee';
+    }
+
     if (!user) {
       console.error('No matching User found');
       throw new Error('No matching User found');
     }
 
     console.log('User found:', user);
-// Log the plain text password and hashed password for debugging
-console.log('Plain text password:', password);
-console.log('Hashed password:', user.password);
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
@@ -87,11 +108,75 @@ console.log('Hashed password:', user.password);
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
-    return token;
+    return { ...user.toObject(), userType, token };
   } catch (error) {
     console.error('Login failed:', error);
     throw new Error('Login failed: ' + error.message);
   }
 };
 
-module.exports = { registerUser, loginUser };
+
+//---------------------------------------------------------------------------------------------------------//
+// Function to process a transaction
+const processTransaction = async (transactionData) => {
+  const { userId, recipientName, recipientsBank, recipientsAccountNumber, amountToTransfer, swiftCode, transactionType, status, date } = transactionData;
+  try {
+    if (!userId || !recipientName || !recipientsBank || !recipientsAccountNumber || !amountToTransfer || !transactionType || !status || !date) {
+      throw new Error('Missing required transaction data');
+    }
+    console.log('Processing transaction data:', transactionData);
+
+    const newTransaction = new Transaction({
+      userId,
+      recipientName,
+      recipientsBank,
+      recipientsAccountNumber,
+      amountToTransfer,
+      swiftCode,
+      transactionType,
+      status,
+      date,
+    });
+
+    await newTransaction.save();
+
+    return { message: 'Transaction processed successfully', transaction: newTransaction };
+  } catch (error) {
+    console.error('Transaction processing failed:', error); // Log the error for debugging
+    throw new Error('Transaction processing failed: ' + error.message);
+  }
+};
+
+const validateTransaction = async (transactionId) => {
+  try {
+    const transaction = await Transaction.findById(transactionId);
+    if (!transaction) {
+      throw new Error('Transaction not found');
+    }
+    transaction.status = 'Validated';
+    await transaction.save();
+    return { message: 'Transaction validated successfully', transaction };
+  } catch (error) {
+    console.error('Transaction validation failed:', error);
+    throw new Error('Transaction validation failed: ' + error.message);
+  }
+};
+
+const rejectTransaction = async (transactionId) => {
+  try {
+    const transaction = await Transaction.findById(transactionId);
+    if (!transaction) {
+      throw new Error('Transaction not found');
+    }
+    transaction.status = 'Rejected';
+    await transaction.save();
+    return { message: 'Transaction rejected successfully', transaction };
+  } catch (error) {
+    console.error('Transaction rejection failed:', error);
+    throw new Error('Transaction rejection failed: ' + error.message);
+  }
+};
+
+//---------------------------------------------------------------------------------------------------------//
+
+module.exports = { registerUser, loginUser, processTransaction, validateTransaction, rejectTransaction };
