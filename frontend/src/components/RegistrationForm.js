@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import authService from '../services/authService';
@@ -17,22 +16,6 @@ function Register() {
     const [loading, setLoading] = useState(false); // Loading state
 
     const [error, setError] = useState(null);
-=======
-// frontend/src/components/RegistrationForm.js
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import authService from '../services/authService';
-import sanitizeInput from '../middleware/inputSanitizer';
-
-function Register() {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [fullName, setFullName] = useState('');
-    const [accountNumber, setAccountNumber] = useState('');
-    const [error, setError] = useState(null);
-    const [loading, setLoading] = useState(false); // Loading state
-    const [csrfToken, setCsrfToken] = useState(''); // State for CSRF token
->>>>>>> 468b49c (Register page is fixed)
     const navigate = useNavigate(); // Use useNavigate for redirection
 
     useEffect(() => {
@@ -43,19 +26,12 @@ function Register() {
                     credentials: 'include' // Include credentials for cookies
                 });
                 const data = await response.json();
-<<<<<<< HEAD
                 console.log('CSRF token:', data.csrfToken);
-=======
->>>>>>> 468b49c (Register page is fixed)
                 setCsrfToken(data.csrfToken); // Set CSRF token from server
             } catch (error) {
                 console.error('Failed to fetch CSRF token:', error);
             }
         };
-<<<<<<< HEAD
-=======
-
->>>>>>> 468b49c (Register page is fixed)
         fetchCsrfToken();
     }, []);
 
@@ -66,7 +42,6 @@ function Register() {
         setLoading(true); // Start loading
 
         // Sanitize user inputs
-<<<<<<< HEAD
         const sanitizedFirstName = sanitizeInput(firstName);
         const sanitizedLastName = sanitizeInput(lastName);
         const sanitizedUsername = sanitizeInput(username);
@@ -107,24 +82,6 @@ function Register() {
                 sanitizedUsername,
                 password,
                 csrfToken
-=======
-        const sanitizedFullName = sanitizeInput(fullName);
-        const sanitizedUsername = sanitizeInput(username);
-        const sanitizedAccountNumber = sanitizeInput(accountNumber);
-
-        console.log('Sanitized Full Name:', sanitizedFullName);
-        console.log('Sanitized Username:', sanitizedUsername);
-        console.log('Sanitized Account Number:', sanitizedAccountNumber);
-        console.log('Password, CSRF Token:', password, csrfToken);
-        
-        try {
-            const data = await authService.register(
-                sanitizedUsername,
-                password,
-                sanitizedFullName,
-                sanitizedAccountNumber,
-                csrfToken // Include CSRF token in the request
->>>>>>> 468b49c (Register page is fixed)
             );
             // If registration is successful, navigate to the login page
             if (data) {
@@ -132,16 +89,12 @@ function Register() {
             }
         } catch (error) {
             setError(error.message || 'Registration failed. Please try again.'); // Handle error
-<<<<<<< HEAD
         } finally {
             setLoading(false); // Stop loading after request
-=======
->>>>>>> 468b49c (Register page is fixed)
         }
     };
 
     return (
-<<<<<<< HEAD
         <div className="registration-container">
             <div className="logo-container">
         <img src={logo} alt="Logo" />
@@ -156,23 +109,10 @@ function Register() {
                         type="text"
                         value={firstName}
                         onChange={(e) => setFirstName(e.target.value)}
-=======
-        <div>
-            <h2>Register</h2>
-            {error && <p style={{ color: 'red' }}>{error}</p>}
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label>Full Name:</label>
-                    <input
-                        type="text"
-                        value={fullName}
-                        onChange={(e) => setFullName(e.target.value)}
->>>>>>> 468b49c (Register page is fixed)
                         required
                     />
                 </div>
                 <div>
-<<<<<<< HEAD
                     <label>Last Name:</label>
                     <input
                         type="text"
@@ -196,13 +136,6 @@ function Register() {
                         type="text"
                         value={idNumber}
                         onChange={(e) => setIDNumber(e.target.value)}
-=======
-                    <label>Account Number:</label>
-                    <input
-                        type="text"
-                        value={accountNumber}
-                        onChange={(e) => setAccountNumber(e.target.value)}
->>>>>>> 468b49c (Register page is fixed)
                         required
                     />
                 </div>
@@ -228,13 +161,10 @@ function Register() {
                     {loading ? 'Registering...' : 'Register'}
                 </button>
             </form>
-<<<<<<< HEAD
             <div className="additional-info">
         <label>Already have an account?</label>
         <a href="/login">Login here</a>
       </div>
-=======
->>>>>>> 468b49c (Register page is fixed)
         </div>
     );
 }

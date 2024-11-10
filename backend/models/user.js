@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-<<<<<<< HEAD
 const bcrypt = require('bcrypt');
 
 const userSchema = new mongoose.Schema({
@@ -38,27 +37,6 @@ userSchema.pre('save', async function (next) {
     const salt = await bcrypt.genSalt(10);
     this.password = await bcrypt.hash(this.password, salt);
     next();
-=======
-
-const userSchema = new mongoose.Schema({
-  username: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  password: {
-    type: String,
-    required: true,
-  },
-  fullName: {
-    type: String,
-    required: true,
-  },
-  accountNumber: {
-    type: String,
-    required: true,
-  },
->>>>>>> 468b49c (Register page is fixed)
 });
 
 const User = mongoose.model('User', userSchema);

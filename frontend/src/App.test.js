@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import React from 'react'; 
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
@@ -27,13 +26,3 @@ test('renders registration page when navigating to /register', () => {
   const registerHeading = screen.getByRole('heading', { name: /register/i });
   expect(registerHeading).toBeInTheDocument();
 });
-=======
-import { render, screen } from '@testing-library/react';
-import App from './App';
-
-test('renders learn react link', () => {
-  render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
-});
->>>>>>> 468b49c (Register page is fixed)

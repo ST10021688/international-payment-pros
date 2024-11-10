@@ -6,10 +6,7 @@
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
-<<<<<<< HEAD
     "axios": "^1.7.7",
-=======
->>>>>>> 468b49c (Register page is fixed)
     "helmet": "^8.0.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
@@ -20,11 +17,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-<<<<<<< HEAD
     "test": "react-scripts test --config ../backend/jest.config.js",
-=======
-    "test": "react-scripts test",
->>>>>>> 468b49c (Register page is fixed)
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

@@ -3,7 +3,6 @@ import axios from 'axios';
 
 const API_URL = 'http://localhost:5000/api/auth'; // Adjust this to your backend URL
 
-<<<<<<< HEAD
 const register = async (firstName, lastName, email, username, password, idNumber, csrfToken) => {
   try {
     const response = await axios.post(`${API_URL}/register`, {
@@ -13,15 +12,6 @@ const register = async (firstName, lastName, email, username, password, idNumber
       username,
       password,
       idNumber,
-=======
-const register = async (username, password, fullName, accountNumber, csrfToken) => {
-  try {
-    const response = await axios.post(`${API_URL}/register`, {
-      username,
-      password,
-      fullName,
-      accountNumber,
->>>>>>> 468b49c (Register page is fixed)
     }, {
       headers: {
         'X-CSRF-Token': csrfToken // Include the CSRF token in the headers
@@ -45,7 +35,6 @@ const login = async (username, password) => {
   }
 };
 
-<<<<<<< HEAD
 const payment = async (userId, recipientName, recipientsBank, recipientsAccountNumber, amountToTransfer, swiftCode, transactionType, status, date) => {
   try {
     const response = await axios.post(`${API_URL}/transactions`, {
@@ -69,11 +58,6 @@ const authService = {
   login,
   register,
   payment,
-=======
-const authService = {
-  login,
-  register,
->>>>>>> 468b49c (Register page is fixed)
 };
 
 export default authService;
