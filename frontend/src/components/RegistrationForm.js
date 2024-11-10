@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import authService from '../services/authService';
 import { sanitizeInput, validateUsername, validateIDNumber, validatePassword } from '../middleware/inputSanitizer';
@@ -12,28 +12,9 @@ function Register() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [idNumber, setIDNumber] = useState('');
-    const [csrfToken, setCsrfToken] = useState(''); // State for CSRF token
     const [loading, setLoading] = useState(false); // Loading state
-
     const [error, setError] = useState(null);
     const navigate = useNavigate(); // Use useNavigate for redirection
-
-    useEffect(() => {
-        const fetchCsrfToken = async () => {
-            try {
-                const response = await fetch('/api/csrf-token', {
-                    method: 'GET',
-                    credentials: 'include' // Include credentials for cookies
-                });
-                const data = await response.json();
-                console.log('CSRF token:', data.csrfToken);
-                setCsrfToken(data.csrfToken); // Set CSRF token from server
-            } catch (error) {
-                console.error('Failed to fetch CSRF token:', error);
-            }
-        };
-        fetchCsrfToken();
-    }, []);
 
     // Handles form submission
     const handleSubmit = async (e) => {
@@ -72,7 +53,7 @@ function Register() {
         console.log('Email Address:', emailAddress);
         console.log('Sanitized Username:', sanitizedUsername);
         console.log('Sanitized ID Number:', sanitizedIDNumber);
-        console.log('Password, CSRF Token:', password, csrfToken);
+        console.log('Password:', password);
 
         try {
             const data = await authService.register(
@@ -81,7 +62,7 @@ function Register() {
                 emailAddress,
                 sanitizedUsername,
                 password,
-                csrfToken
+                sanitizedIDNumber
             );
             // If registration is successful, navigate to the login page
             if (data) {

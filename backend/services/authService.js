@@ -1,9 +1,9 @@
 // backend/services/authService.js
 const bcrypt = require('bcrypt');
-const crypto = require('crypto'); // For STRONG token IDS
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const Account = require('../models/Account');
+require('dotenv').config(); // Load environment variables
 
 // Function to generate a unique bank account number
 const generateAccountNumber = async () => {
@@ -30,7 +30,10 @@ const registerUser = async (userData) => {
       throw new Error('Username already taken');
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    //const hashedPassword = await bcrypt.hash(password, 10);
+
+    const salt = await bcrypt.genSalt(10);  // 10 rounds of salt
+    const hashedPassword = await bcrypt.hash(password, salt);
 
     const newUser = new User({
       firstName, 
@@ -60,9 +63,6 @@ const registerUser = async (userData) => {
   }
 };
 
-// generates STRONG token ID
-const JWT_SECRET = crypto.randomBytes(64).toString('hex'); 
-
 // Function to log in a user
 const loginUser = async (username, password) => {
   try {
@@ -73,6 +73,9 @@ const loginUser = async (username, password) => {
     }
 
     console.log('User found:', user);
+// Log the plain text password and hashed password for debugging
+console.log('Plain text password:', password);
+console.log('Hashed password:', user.password);
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
@@ -82,7 +85,7 @@ const loginUser = async (username, password) => {
 
     console.log('Password match:', isMatch);
 
-    const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: '1h' });
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
     return token;
   } catch (error) {
