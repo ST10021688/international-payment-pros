@@ -4,9 +4,8 @@ orbs:
 
 jobs:
   start-backend:
-    # Job to start the backend server
     docker:
-      - image: circleci/node:14
+      - image: circleci/node:16  # Use Node.js 16 for backend
     working_directory: ~/international-payment-pros/backend
     steps:
       - checkout:
@@ -22,8 +21,8 @@ jobs:
           background: true  # Run backend in the background
 
   build-frontend:
-    # Frontend build job
-    executor: node/default
+    docker:
+      - image: circleci/node:16  # Use Node.js 16 for frontend as well
     working_directory: ~/international-payment-pros/frontend
     steps:
       - checkout:
