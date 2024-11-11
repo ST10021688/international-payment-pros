@@ -14,6 +14,11 @@ jobs:
           name: Install Backend Dependencies
           command: npm install
       - run:
+          name: Verify keys directory and files
+          command: |
+            mkdir -p keys
+            ls -al keys  # List contents of the keys directory to confirm files are present
+      - run:
           name: Start Backend Server
           command: npm start  # Use your backend start command here
           background: true    # Run backend in the background
