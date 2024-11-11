@@ -39,7 +39,7 @@ jobs:
           
   sonarcloud:
     docker:
-      - image: circleci/python:3.8 # Use Java 17 for SonarCloud
+      - image: cimg/base:2023.03 # Use Java 17 for SonarCloud
     working_directory: ~/international-payment-pros
     steps:
       - checkout:
