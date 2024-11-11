@@ -47,7 +47,7 @@ jobs:
           name: Build Frontend Project
           working_directory: ~/international-payment-pros/frontend
           command: sudo npm run build
-       - run:
+      - run:
           name: Create Frontend Artifacts Directory
           command: mkdir -p /home/circleci/artifacts/frontend
       - run:
