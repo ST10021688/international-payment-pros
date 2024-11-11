@@ -10,16 +10,17 @@ const userRoutes = require('./routes/userRoutes');
 const connectToDatabase = require('./db/conn_db');
 const https = require('https'); // Include https module
 const fs = require('fs'); // File system to read SSL certificates
+const path = require('path');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
 // SSL Config: Load your SSL certificates
 const sslOptions = {
-  key: fs.readFileSync('./keys/server.key'), 
-  cert: fs.readFileSync('./keys/server.crt'),
-  ca: fs.readFileSync('./keys/myCA.pem') 
-};
+  key: fs.readFileSync(path.resolve(__dirname, 'keys', 'server.key')),
+  cert: fs.readFileSync(path.resolve(__dirname, 'keys', 'server.crt')),
+  ca: fs.readFileSync(path.resolve(__dirname, 'keys', 'myCA.pem'))
+};  
 
 // Middleware
 app.use(helmet()); // Use helmet to secure the app by setting HTTP headers
@@ -68,12 +69,12 @@ https.createServer(sslOptions, app).listen(PORT, () => {
   console.log(`Secure server is running on port ${PORT}`);
 });
 
-/*
+
 // Start the server
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
-*/
+
 // Graceful shutdown
 process.on('SIGINT', async () => {
   await mongoose.connection.close();
