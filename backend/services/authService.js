@@ -67,7 +67,7 @@ const registerUser = async (userData) => {
       const account = new Account({
         userId: newUser._id,
         accountNumber,
-        balance: 0 
+        balance: 10000 
       });
 
       await account.save();
@@ -115,7 +115,6 @@ const loginUser = async (username, password) => {
   }
 };
 
-
 //---------------------------------------------------------------------------------------------------------//
 // Function to process a transaction
 const processTransaction = async (transactionData) => {
@@ -139,6 +138,25 @@ const processTransaction = async (transactionData) => {
     });
 
     await newTransaction.save();
+
+    // Find the user's account
+    const userAccount = await Account.findOne({ userId });
+
+    // If the user does not have an account, throw an error
+    if (!userAccount) {
+      throw new Error('Account not found for user');
+    }
+
+    // Check if the user has sufficient balance
+    if (userAccount.balance < amountToTransfer) {
+      throw new Error('Insufficient balance');
+    }
+
+    // Subtract the amount from the user's account balance
+    userAccount.balance -= amountToTransfer;
+
+    // Save the updated account balance
+    await userAccount.save();
 
     return { message: 'Transaction processed successfully', transaction: newTransaction };
   } catch (error) {

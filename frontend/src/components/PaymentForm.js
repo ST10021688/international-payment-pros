@@ -4,11 +4,12 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { UserContext } from '../UserContext';
 import authService from '../services/authService';
 import './PaymentForm.css';
+import logo from '../assets/images/bank-logo.png'; // Import the logo image
 
 const PaymentForm = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { paymentType } = location.state || {};
+  const { paymentType } = location.state || { paymentType: 'local' }; // Default to 'local' if not passed
   const { user } = useContext(UserContext);
   const userId = user?.userId;
 
@@ -53,8 +54,16 @@ const PaymentForm = () => {
   };
 
   return (
+    <div className="main-container">
+
+      <div className="logo-container">
+        <img src={logo} alt="Logo" />
+        <label>Global Banking</label>
+      </div>
+
     <div className="payment-form-container">
       <h3>{paymentType === 'Local' ? 'Local Payment' : 'International Payment'}</h3>
+      
       <form onSubmit={handleFormSubmit}>
         <div>
           <label>Recipient Name:</label>
@@ -66,6 +75,7 @@ const PaymentForm = () => {
             required
           />
         </div>
+
         <div>
           <label>Recipient Bank:</label>
           <input
@@ -76,6 +86,7 @@ const PaymentForm = () => {
             required
           />
         </div>
+
         <div>
           <label>Recipient Account Number:</label>
           <input
@@ -86,6 +97,7 @@ const PaymentForm = () => {
             required
           />
         </div>
+
         <div>
           <label>Amount to Transfer:</label>
           <input
@@ -96,21 +108,25 @@ const PaymentForm = () => {
             required
           />
         </div>
-        {paymentType === 'international' && (
-          <div>
-            <label>SWIFT Code:</label>
-            <input
-              type="text"
-              name="swiftCode"
-              value={transactionData.swiftCode}
-              onChange={handleInputChange}
-              required
-            />
-          </div>
-        )}
+
+        {paymentType === 'International' && (
+            <div>
+              <label>SWIFT Code:</label>
+              <input
+                type="text"
+                name="swiftCode"
+                value={transactionData.swiftCode}
+                onChange={handleInputChange}
+                required
+              />
+            </div>
+          )}
+
         <button type="submit">Confirm</button>
+
         <button type="button" onClick={() => navigate('/dashboard')}>Cancel</button>
       </form>
+    </div>
     </div>
   );
 };

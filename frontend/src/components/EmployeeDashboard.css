@@ -1,39 +1,112 @@
-.employee-dashboard {
+.main-container {
+  position: relative; 
+  height: 100vh;
+  width: 100vw;
   padding: 20px;
-  background-color: #f9fafb; /* Light background for contrast */
-  font-family: Arial, sans-serif; /* Consistent font */
-  color: #333; /* Standard text color */
 }
 
+.employee-dashboard {
+  position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(46, 46, 46, 0.85); /* Slightly darker for readability */
+    color: #000000;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 1000px;
+    width: 100%;
+    margin-left: 40px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+}
+
+h1 {
+  text-align: center;
+  /*margin-bottom: 40px;*/
+  font-size: 36px; /* Larger font size for headers */
+  font-weight: bold;
+  color: #ffffff;
+}
+
+.main-actions {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  max-width: 800px; /* Limit max width for better layout on large screens */
+  gap: 10px; /* Add space between action buttons */
+}
+
+.divider {
+  width: 0px;
+}
+
+.logout-button {
+  background-color: #ff2e2e;  /* Red color for logout */
+  color: white;
+  border: none;
+  width: 100px;
+  height: 40px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.logout-button:hover {
+  background-color: #e60000;  /* Darker red on hover */
+}
+
+.logout-button:focus {
+  outline: none;
+}
+
+.logout-button:active {
+  background-color: #cc0000;  /* Darkest red when button is clicked */
+}
+
+/* Table Styling */
 table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 20px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
-  background-color: #ffffff; /* Set background color for table */
+  margin-top: 0;  /* Ensure no space above the table */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
+  border-spacing: 0;  /* Ensures no space between rows */
 }
 
 th, td {
-  border: 1px solid #e1e4e8; /* Subtle border color */
-  padding: 12px; /* Increased padding for readability */
-  text-align: left; /* Consistent alignment */
-  font-size: 16px; /* Slightly larger font size */
+  border: 1px solid #e1e4e8;
+  padding: 12px;
+  text-align: left;
+  font-size: 16px;
 }
 
 th {
-  background-color: #e9ecef; /* Slightly darker header color */
-  font-weight: 600; /* Bold header text */
-  color: #4b5563; /* Darker text color for headers */
+  background-color: #e9ecef;
+  font-weight: 600;
+  color: #4b5563;
+  position: sticky;
+  top: 0;
+  z-index: 1;
 }
 
 tr:nth-child(even) {
-  background-color: #f8f9fb; /* Alternating row background color */
+  background-color: #f8f9fb;
 }
 
 tr:hover {
-  background-color: #e0f7fa; /* Highlight row on hover */
+  background-color: #e0f7fa;
   cursor: pointer;
 }
+
+/* Scrollable Table Body */
+.table-wrapper {
+  max-height: 300px;
+  overflow-y: auto;
+  padding-top: 0;  /* Remove any padding above the table body */
+  margin-top: 0;   /* Remove any margin above the table body */
+}
+
 
 button {
   padding: 8px 12px;
