@@ -25,9 +25,6 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Verify package.json
-          command: cat package.json  # Outputs package.json to confirm the correct build script
-      - run:
           name: List Files for Debugging
           command: ls -R ~/international-payment-pros  # Lists all files to check structure
       - run:
