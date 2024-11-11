@@ -39,11 +39,17 @@ jobs:
           
   sonarcloud:
     docker:
-      - image: cimg/openjdk:17.0  # Use Java 17 for SonarCloud
+      - image: circleci/python:3.8 # Use Java 17 for SonarCloud
     working_directory: ~/international-payment-pros
     steps:
       - checkout:
           path: ~/international-payment-pros
+      - run:
+          name: Install Java 17 
+          command: | 
+            sudo apt-get update 
+            sudo apt-get install openjdk-17-jdk 
+            java -version
       - run:
           name: Install SonarScanner
           command: |
