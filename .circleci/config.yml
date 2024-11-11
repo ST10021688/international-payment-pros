@@ -64,7 +64,7 @@ jobs:
       - run:
           name: Install SonarScanner
           command: |
-       curl -sSLo sonar-scanner-cli.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-linux.zip
+            curl -sSLo sonar-scanner-cli.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-linux.zip
             unzip sonar-scanner-cli.zip -d $HOME
             export PATH=$HOME/sonar-scanner-4.6.2.2472-linux/bin:$PATH && sonar-scanner \
               -Dsonar.projectKey=ST10021688_international-payment-pros \
@@ -96,10 +96,9 @@ workflows:
             - build-frontend
             - test-backend
 
-
-     
-
-    # Uncomment the lines below to enable deployment after build
-     - deploy:
-         requires:
-           - build-node
+    # Uncomment the lines below to enable deployment after build and tests
+      # (Make sure to replace `build-node` with `build-frontend` if this was a typo)
+      # - deploy:
+      #     requires:
+      #       - build-frontend
+      #       - test-backend
