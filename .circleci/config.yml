@@ -39,29 +39,32 @@ jobs:
           
   sonarcloud:
     docker:
-      - image: openjdk:11-jdk  
+      - image: openjdk:17-jdk  
     working_directory: ~/international-payment-pros
     steps:
       - checkout:
           path: ~/international-payment-pros
-      - run: 
-          name: Install sh and other dependencies 
+      - run:
+          name: Install dependencies and SonarScanner
           command: |
-            apt-get update && apt-get install -y curl unzip dash
-            ln -sfT /bin/dash /bin/sh
-            which sh 
-            ls -l /bin/sh
-      - run: 
-          name: Verify sh location 
+            apt-get update 
+            apt-get install -y curl unzip 
+            curl -sSLo /tmp/sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-linux.zip 
+            unzip /tmp/sonar-scanner.zip -d $HOME 
+            echo "export PATH=\$HOME/sonar-scanner-4.6.2.2472-linux/bin:\$PATH" >> $BASH_ENV
+            source $BASH_ENV
+      - run:
+          name: Configure JAVA_HOME for Java 17
           command: |
-            which sh
-      - run: 
-          name: Install and Run SonarQube Scan 
+            export JAVA_HOME=$(dirname $(dirname $(readlink -f $(which java)))) 
+            echo $JAVA_HOME 
+            export PATH=$JAVA_HOME/bin:$PATH 
+            java -version
+      - run:
+          name: Execute SonarCloud Analysis
           command: |
-            curl -sSLo sonar-scanner-cli.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-linux.zip 
-            unzip sonar-scanner-cli.zip 
-            export SONAR_SCANNER_HOME=$(pwd)/sonar-scanner-4.6.2.2472-linux
-            export PATH=$SONAR_SCANNER_HOME/bin:$PATHn
+            export JAVA_HOME=/usr/lib/jvm/java-17.0.2-openjdk 
+            export PATH=$JAVA_HOME/bin:$PATH 
             sonar-scanner \
               -Dsonar.projectKey=ST10021688_international-payment-pros \
               -Dsonar.organization=st10021688 \
