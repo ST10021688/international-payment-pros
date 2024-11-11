@@ -1,135 +1,149 @@
-/* frontend/src/components/RegistrationForm.css */
+/* Base styling for body layout and background */
 body {
     display: flex;
-    justify-content: flex-start; /* Align items to the left */
-    align-items: center; /* Center items vertically */
-    height: 100vh; /* Ensure the body takes the full height of the viewport */
-    margin: 0; /* Remove default margin */
+    justify-content: flex-start;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
     background: url('../assets/images/sign-up-bg.svg') no-repeat center center fixed;
     background-size: cover;
-    position: relative; /* Enable positioning of child elements */
+    position: relative;
+    font-family: Arial, sans-serif;
+    color: #ffffff;
 }
 
+/* Container for the registration form with subtle enhancements */
 .registration-container {
-    background-color: rgba(46, 46, 46, 0.8); /* Semi-transparent background */
+    background-color: rgba(46, 46, 46, 0.85); /* Slightly darker for readability */
     color: #ffffff;
     padding: 20px;
-    padding-top: 5px;
     border-radius: 8px;
     max-width: 400px;
-    width: 100%; /* Ensure it takes the full width up to max-width */
-    margin-left: 80px; /* Add some margin to the left */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    margin-bottom: 100px;
+    width: 100%;
+    margin: 20px 80px 100px; /* Adds vertical margin for centering */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
 }
 
+/* Centered header styling */
 h2 {
     text-align: center;
     margin-bottom: 20px;
+    font-size: 1.5rem;
 }
 
+/* Form layout */
 .registration-form {
     display: flex;
     flex-direction: column;
-    align-items: center; /* Center items horizontally */
+    align-items: stretch; /* Full width alignment */
 }
 
 .registration-form div {
     margin-bottom: 15px;
-    width: 100%; /* Ensure div takes full width */
+    width: 100%;
     display: flex;
-    flex-direction: column; /* Stack label and input vertically */
-    align-items: center; /* Center the input and button */}
+    flex-direction: column;
+}
 
 label {
     display: block;
+    font-size: 0.9rem;
     margin-bottom: 5px;
+    color: #bbb; /* Light gray for labels */
 }
 
+/* Input fields styling */
 input[type="text"],
 input[type="password"] {
     width: 100%;
     padding: 10px;
     border: none;
     border-radius: 4px;
-    background-color: #333; /* Dark input fields */
-    color: #fff; /* White text in input fields */
+    background-color: #333;
+    color: #fff;
+    font-size: 1rem;
     transition: background-color 0.3s;
 }
 
 input[type="text"]:focus,
 input[type="password"]:focus {
-    background-color: #444; /* Slightly lighter on focus */
+    background-color: #444;
     outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Slight blue shadow */
 }
 
+/* Button styling */
 button {
     width: 100%;
     padding: 10px;
-    background-color: #007bff; /* Button background color */
+    background-color: #007bff;
     border: none;
     border-radius: 4px;
     color: #fff;
-    font-size: 16px;
+    font-size: 1rem;
     cursor: pointer;
     transition: background-color 0.3s;
 }
 
 button:hover {
-    background-color: #0056b3; /* Darker blue on hover */
+    background-color: #0056b3;
 }
 
+/* Error message styling */
 .error-message {
-    color: #ff4c4c; /* Error message color */
+    color: #ff4c4c;
     margin-bottom: 20px;
+    font-size: 0.9rem;
 }
 
-/* New styles for logo and label */
+/* Logo container with a glassmorphism effect */
 .logo-container {
     position: absolute;
     top: 60px;
     right: 60px;
     display: flex;
     align-items: center;
-    background-color: rgba(255, 255, 255, 0.5); /* Semi-transparent white */
-    backdrop-filter: blur(10px); /* Apply blur effect */
-        padding: 10px;
-    padding-left: 0px;
+    background-color: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(10px);
+    padding: 10px 20px;
     border-radius: 16px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
 }
 
 .logo-container img {
-    max-width: 100px;
+    max-width: 80px;
+    margin-right: 10px;
 }
 
 .logo-container label {
     color: #0F225E;
-    font-size: 36px;
+    font-size: 1.5rem;
     font-weight: bold;
-    margin-right: 5px;
-    margin-top: 5px;
 }
 
-
-/* New styles for additional info */
+/* Additional info section styling */
 .additional-info {
-    display: flex !important; /* Ensure flexbox layout */
-    flex-direction: column !important; /* Stack items vertically */
-    justify-content: center !important; /* Center items horizontally */
-    align-items: center !important; /* Center items vertically */
-    margin-top: 20px !important; /* Add space above the container */
-    width: auto !important; /* Ensure it takes only the necessary width */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    width: auto;
 }
 
 .additional-info label {
-    margin-bottom: 5px !important; /* Add space below the label */
-    text-align: center !important; /* Center text */
+    margin-bottom: 5px;
+    font-size: 0.9rem;
+    color: #bbb;
+    text-align: center;
 }
+
 .additional-info a {
-    color: #92E2F9 !important;
-    text-decoration: none !important;
+    color: #92E2F9;
+    text-decoration: none;
+    font-weight: 500;
 }
 
 .additional-info a:hover {
-    text-decoration: underline !important;
+    text-decoration: underline;
 }

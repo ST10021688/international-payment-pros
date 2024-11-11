@@ -1,136 +1,155 @@
 /* frontend/src/components/PaymentForm.css */
+
 body {
     display: flex;
-    justify-content: center; /* Center items horizontally */
-    align-items: center; /* Center items vertically */
-    height: 100vh; /* Ensure the body takes the full height of the viewport */
-    margin: 0; /* Remove default margin */
-    background-color: #f0f0f0; /* Set a background color instead of an image */
-    position: relative; /* Enable positioning of child elements */
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f7f7f7; /* Soft background color for a cleaner look */
+    font-family: Arial, sans-serif; /* Use a clean, professional font */
+    color: #333;
 }
 
 .payment-form-container {
-    background-color: rgba(46, 46, 46, 0.8); /* Semi-transparent background */
+    background-color: rgba(46, 46, 46, 0.85); /* Darker, cleaner look */
     color: #ffffff;
-    padding: 20px;
-    padding-top: 5px;
-    border-radius: 8px;
+    padding: 25px;
+    border-radius: 10px;
     max-width: 600px;
-    width: 100%; /* Ensure it takes the full width up to max-width */
-    margin: 20px; /* Add some margin */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    width: 100%;
+    margin: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 h3 {
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
+    font-size: 1.8rem;
+    color: #ddd;
 }
 
 .payment-form-container form {
+    width: 100%;
     display: flex;
     flex-direction: column;
-    align-items: center; /* Center items horizontally */
+    align-items: center;
 }
 
 .payment-form-container div {
     margin-bottom: 15px;
-    width: 100%; /* Ensure div takes full width */
+    width: 100%;
     display: flex;
-    flex-direction: column; /* Stack label and input vertically */
-    align-items: center; /* Center the input and button */
+    flex-direction: column;
+    align-items: stretch;
 }
 
 label {
-    display: block;
-    margin-bottom: 5px;
+    font-size: 1rem;
+    margin-bottom: 6px;
+    color: #ccc;
+    text-align: left;
+    padding-left: 5px;
 }
 
 input[type="text"],
 input[type="password"],
 input[type="number"] {
     width: 100%;
-    padding: 10px;
-    border: none;
-    border-radius: 4px;
-    background-color: #333; /* Dark input fields */
-    color: #fff; /* White text in input fields */
-    transition: background-color 0.3s;
+    padding: 12px;
+    border: 1px solid #444;
+    border-radius: 5px;
+    background-color: #333;
+    color: #ffffff;
+    transition: background-color 0.3s, border-color 0.3s;
 }
 
 input[type="text"]:focus,
 input[type="password"]:focus,
 input[type="number"]:focus {
-    background-color: #444; /* Slightly lighter on focus */
+    background-color: #444;
     outline: none;
+    border-color: #666;
 }
 
 button {
     width: 100%;
-    padding: 10px;
-    background-color: #007bff; /* Button background color */
+    padding: 12px;
+    background-color: #007bff;
     border: none;
-    border-radius: 4px;
-    color: #fff;
-    font-size: 16px;
+    border-radius: 5px;
+    color: #ffffff;
+    font-size: 1rem;
+    font-weight: bold;
     cursor: pointer;
     transition: background-color 0.3s;
+    margin-top: 10px;
 }
 
 button:hover {
-    background-color: #0056b3; /* Darker blue on hover */
+    background-color: #0056b3;
 }
 
 .error-message {
-    color: #ff4c4c; /* Error message color */
-    margin-bottom: 20px;
+    color: #ff4c4c;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 15px;
 }
 
-/* New styles for logo and label */
+/* Logo and Label Styles */
 .logo-container {
     position: absolute;
-    top: 60px;
-    right: 60px;
+    top: 50px;
+    right: 50px;
     display: flex;
     align-items: center;
-    background-color: rgba(255, 255, 255, 0.5); /* Semi-transparent white */
-    backdrop-filter: blur(10px); /* Apply blur effect */
+    background-color: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(10px);
     padding: 10px;
-    padding-left: 0px;
-    border-radius: 16px;
+    padding-left: 0;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 }
 
 .logo-container img {
-    max-width: 100px;
+    max-width: 80px;
 }
 
 .logo-container label {
     color: #0F225E;
-    font-size: 36px;
+    font-size: 1.5rem;
     font-weight: bold;
-    margin-right: 5px;
-    margin-top: 5px;
+    margin-right: 10px;
+    margin-top: 8px;
 }
 
-/* New styles for additional info */
+/* Additional Info Styles */
 .additional-info {
-    display: flex !important; /* Ensure flexbox layout */
-    flex-direction: column !important; /* Stack items vertically */
-    justify-content: center !important; /* Center items horizontally */
-    align-items: center !important; /* Center items vertically */
-    margin-top: 20px !important; /* Add space above the container */
-    width: auto !important; /* Ensure it takes only the necessary width */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+    text-align: center;
 }
 
 .additional-info label {
-    margin-bottom: 5px !important; /* Add space below the label */
-    text-align: center !important; /* Center text */
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+    color: #bbb;
 }
 
 .additional-info a {
-    color: #92E2F9 !important;
-    text-decoration: none !important;
+    color: #92E2F9;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s;
 }
 
 .additional-info a:hover {
-    text-decoration: underline !important;
+    color: #60c8f9;
+    text-decoration: underline;
 }
