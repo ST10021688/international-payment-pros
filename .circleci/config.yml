@@ -39,7 +39,7 @@ jobs:
           
   sonarcloud:
     docker:
-      - image: openjdk:17-jdk  
+      - image: cimg/openjdk:17.0
     working_directory: ~/international-payment-pros
     steps:
       - checkout:
