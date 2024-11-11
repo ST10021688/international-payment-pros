@@ -18,7 +18,7 @@ const validateIDNumber = (idNumber) => {
 
 const validatePassword = (password) => {
   // Password must be at least 8 characters long, include an uppercase letter, a lowercase letter, a digit, and a special character
-  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+={}\[\]|\\:;"<>,.?/~`-])[A-Za-z\d!@#$%^&*()_+={}\[\]|\\:;"<>,.?/~`-]{8,}$/;
   return passwordRegex.test(password);
 };
 
