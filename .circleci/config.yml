@@ -9,7 +9,11 @@ jobs:
       - image: circleci/node:14
     working_directory: ~/international-payment-pros/backend
     steps:
-      - checkout
+      - checkout:
+          path: ~/international-payment-pros  # Ensures correct checkout path without nesting
+      - run:
+          name: Verify Project Structure
+          command: ls -R ~/international-payment-pros  # Debug step to confirm structure
       - run:
           name: Install Backend Dependencies
           command: npm install
@@ -23,10 +27,11 @@ jobs:
     executor: node/default
     working_directory: ~/international-payment-pros/frontend
     steps:
-      - checkout
+      - checkout:
+          path: ~/international-payment-pros  # Ensures correct path without duplication
       - run:
-          name: List Files for Debugging
-          command: ls -R ~/international-payment-pros  # Lists all files to check structure
+          name: List Project Structure
+          command: ls -R ~/international-payment-pros  # Debugging step to confirm structure
       - run:
           name: Install Frontend Dependencies
           command: npm install
