@@ -6,12 +6,12 @@ jobs:
   start-backend:
     # Job to start the backend server
     docker:
-      - image: circleci/node:16  # Use Node.js 16 for backend
+      - image: circleci/node:16  # Changed to Node.js 16
     working_directory: ~/international-payment-pros/backend
     steps:
       - checkout:
           path: ~/international-payment-pros  # Ensures correct checkout path without nesting
-     - run:
+      - run:
           name: Install Backend Dependencies
           working_directory: ~/international-payment-pros/backend
           command: npm install
@@ -20,15 +20,17 @@ jobs:
           working_directory: ~/international-payment-pros/backend
           command: npm start
           background: true  # Run backend in the background
+          background: true  # Run backend in the background
 
   build-frontend:
+    # Frontend build job
     docker:
-      - image: circleci/node:16  # Use Node.js 16 for frontend as well
+      - image: circleci/node:16  # Changed to Node.js 16 for frontend as well
     working_directory: ~/international-payment-pros/frontend
     steps:
       - checkout:
           path: ~/international-payment-pros  # Ensures correct path without duplication
-     - run:
+      - run:
           name: Install Frontend Dependencies
           working_directory: ~/international-payment-pros/frontend
           command: npm install
