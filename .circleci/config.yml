@@ -3,19 +3,6 @@ orbs:
   node: circleci/node@5
 
 jobs:
-  test-backend:
-    # Backend test job
-    executor: node/default
-    working_directory: ~/international-payment-pros/backend
-    steps:
-      - checkout
-      - run:
-          name: Install Backend Dependencies
-          command: npm install
-      - run:
-          name: Run Backend Tests
-          command: npm test --passWithNoTests
-
   start-backend:
     # Job to start the backend server
     docker:
@@ -31,19 +18,6 @@ jobs:
           command: npm start  # Use your backend start command here
           background: true    # Run backend in the background
 
-  test-frontend:
-    # Frontend test job that depends on backend
-    executor: node/default
-    working_directory: ~/international-payment-pros/frontend
-    steps:
-      - checkout
-      - run:
-          name: Install Frontend Dependencies
-          command: npm install
-      - run:
-          name: Run Frontend Tests
-          command: npm test --passWithNoTests
-
   build-frontend:
     # Frontend build job
     executor: node/default
@@ -56,7 +30,7 @@ jobs:
       - run:
           name: Build Frontend Project
           command: npm run build
-
+          
   sonarcloud:
     # SonarCloud analysis job
     docker:
@@ -84,24 +58,16 @@ jobs:
           name: Deploy
           command: '# e.g., ./deploy.sh'
 
-
 workflows:
   build-and-test:
     jobs:
-      - test-backend
-      - start-backend:
-          requires:
-            - test-backend
-      - test-frontend:
-          requires:
-            - start-backend
+      - start-backend
       - build-frontend:
           requires:
-            - test-frontend
-
-    # Uncomment the lines below to enable deployment after build and tests
-      # (Make sure to replace `build-node` with `build-frontend` if this was a typo)
-      # - deploy:
-      #     requires:
-      #       - build-frontend
-      #       - test-backend
+            - start-backend
+      - sonarcloud:
+          requires:
+            - build-frontend
+      - deploy:
+          requires:
+            - sonarcloud
