@@ -49,6 +49,10 @@ jobs:
           command: |
             apt-get update && apt-get install -y curl unzip bash
       - run: 
+          name: Link sh to bash 
+          command: |
+            ln -sf /bin/bash /bin/sh
+      - run: 
           name: Install and Run SonarQube Scan 
           command: |
             curl -sSLo sonar-scanner-cli.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-linux.zip 
