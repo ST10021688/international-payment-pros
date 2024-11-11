@@ -55,7 +55,7 @@ jobs:
       - run: 
           name: Verify sh location 
           command: |
-          which sh
+            which sh
       - run: 
           name: Install and Run SonarQube Scan 
           command: |
