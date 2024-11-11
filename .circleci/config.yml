@@ -38,12 +38,12 @@ jobs:
           command: npm run build
           
   sonarcloud:
-    # SonarCloud analysis job
     docker:
-      - image: circleci/openjdk:11-jdk  # Java is required for sonar-scanner
+      - image: circleci/openjdk:11-jdk
     working_directory: ~/international-payment-pros
     steps:
-      - checkout
+      - checkout:
+          path: ~/international-payment-pros
       - run:
           name: Install SonarScanner
           command: |
