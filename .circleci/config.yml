@@ -53,6 +53,10 @@ jobs:
           command: |
             ln -sfT /bin/dash /bin/sh
       - run: 
+          name: Verify sh location 
+          command: |
+          which sh
+      - run: 
           name: Install and Run SonarQube Scan 
           command: |
             curl -sSLo sonar-scanner-cli.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-linux.zip 
