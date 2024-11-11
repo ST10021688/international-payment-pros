@@ -39,17 +39,11 @@ jobs:
           
   sonarcloud:
     docker:
-      - image: openjdk:17-jdk-slim  # Use Java 17 for SonarCloud
+      - image: openjdk:11-jdk-slim  #
     working_directory: ~/international-payment-pros
     steps:
       - checkout:
           path: ~/international-payment-pros
-      - run: 
-          name: Set JAVA_HOME to Java 17 
-          command: |
-            export JAVA_HOME=/usr/lib/jvm/java-17-openjdk 
-            export PATH=$JAVA_HOME/bin:$PATH 
-            java -version 
       - run: 
           name: Install curl and unzip
           command: |
@@ -61,9 +55,6 @@ jobs:
             unzip sonar-scanner-cli.zip 
             export SONAR_SCANNER_HOME=$(pwd)/sonar-scanner-4.6.2.2472-linux
             export PATH=$SONAR_SCANNER_HOME/bin:$PATHn
-            export JAVA_HOME=/usr/lib/jvm/java-17-openjdk # Set JAVA_HOME to Java 17 
-            export PATH=$JAVA_HOME/bin:$PATH # Update PATH to use Java 17
-            $SONAR_SCANNER_HOME/jre/bin/java -version
             sonar-scanner \
               -Dsonar.projectKey=ST10021688_international-payment-pros \
               -Dsonar.organization=st10021688 \
