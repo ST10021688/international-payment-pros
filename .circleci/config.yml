@@ -3,43 +3,58 @@ orbs:
   node: circleci/node@5  # Node.js orb for Node-specific jobs
 
 jobs:
-  test-node:
-    # Frontend test job
+  test-frontend:
+    # Job to test the frontend
     executor: node/default
     working_directory: ~/international-payment-pros/frontend
     steps:
       - checkout:
           path: ~/international-payment-pros
-      - node/install-packages:
-          pkg-manager: npm
       - run:
-          name: Run tests
+          name: Install Frontend Dependencies
+          command: npm install
+      - run:
+          name: Run Frontend Tests
           command: npm test --passWithNoTests
 
-  build-node:
-    # Build Node project for frontend
+  build-frontend:
+    # Job to build the frontend
     executor: node/default
     working_directory: ~/international-payment-pros/frontend
     steps:
       - checkout:
           path: ~/international-payment-pros
-      - node/install-packages:
-          pkg-manager: npm
       - run:
-          name: Build project
+          name: Install Frontend Dependencies
+          command: npm install
+      - run:
+          name: Build Frontend Project
           command: npm run build
       - run:
           name: Create the ~/artifacts directory if it doesn't exist
           command: mkdir -p ~/artifacts
       - run:
-          name: Copy artifacts
+          name: Copy Frontend Artifacts
           command: cp -R build dist public .output .next .docusaurus ~/artifacts 2>/dev/null || true
       - store_artifacts:
           path: ~/artifacts
-          destination: node-build
+          destination: frontend-build
 
+  test-backend:
+    # Job to test the backend
+    executor: node/default
+    working_directory: ~/international-payment-pros/backend
+    steps:
+      - checkout:
+          path: ~/international-payment-pros
+      - run:
+          name: Install Backend Dependencies
+          command: npm install
+      - run:
+          name: Run Backend Tests
+          command: npm test --passWithNoTests
 
- sonarcloud:
+  sonarcloud:
     # SonarCloud analysis job
     docker:
       - image: circleci/openjdk:11-jdk  # Java is required for sonar-scanner
@@ -49,7 +64,7 @@ jobs:
       - run:
           name: Install SonarScanner
           command: |
-            curl -sSLo sonar-scanner-cli.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-linux.zip
+       curl -sSLo sonar-scanner-cli.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-linux.zip
             unzip sonar-scanner-cli.zip -d $HOME
             export PATH=$HOME/sonar-scanner-4.6.2.2472-linux/bin:$PATH && sonar-scanner \
               -Dsonar.projectKey=ST10021688_international-payment-pros \
@@ -63,19 +78,27 @@ jobs:
       - image: cimg/base:stable
     steps:
       - run:
-          name: deploy
+          name: Deploy
           command: '# e.g., ./deploy.sh'
 
 workflows:
   build-and-test:
     jobs:
-      - test-node
-      - build-node:
+      - test-frontend
+      - build-frontend:
           requires:
-            - test-node
+            - test-frontend
+      - test-backend:
+          requires:
+            - test-frontend
       - sonarcloud:
           requires:
-            - build-node
+            - build-frontend
+            - test-backend
+
+
+     
+
     # Uncomment the lines below to enable deployment after build
      - deploy:
          requires:
