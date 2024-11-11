@@ -11,16 +11,15 @@ jobs:
     steps:
       - checkout:
           path: ~/international-payment-pros  # Ensures correct checkout path without nesting
-      - run:
-          name: Verify Project Structure
-          command: ls -R ~/international-payment-pros  # Debug step to confirm structure
-      - run:
+     - run:
           name: Install Backend Dependencies
+          working_directory: ~/international-payment-pros/backend
           command: npm install
       - run:
           name: Start Backend Server
-          command: npm start  # Use your backend start command here
-          background: true    # Run backend in the background
+          working_directory: ~/international-payment-pros/backend
+          command: npm start
+          background: true  # Run backend in the background
 
   build-frontend:
     # Frontend build job
@@ -29,14 +28,13 @@ jobs:
     steps:
       - checkout:
           path: ~/international-payment-pros  # Ensures correct path without duplication
-      - run:
-          name: List Project Structure
-          command: ls -R ~/international-payment-pros  # Debugging step to confirm structure
-      - run:
+     - run:
           name: Install Frontend Dependencies
+          working_directory: ~/international-payment-pros/frontend
           command: npm install
       - run:
           name: Build Frontend Project
+          working_directory: ~/international-payment-pros/frontend
           command: npm run build
           
   sonarcloud:
