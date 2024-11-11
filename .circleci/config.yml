@@ -39,7 +39,7 @@ jobs:
           
   sonarcloud:
     docker:
-      - image: openjdk:11-jdk-slim  #
+      - image: openjdk:11-jdk  
     working_directory: ~/international-payment-pros
     steps:
       - checkout:
