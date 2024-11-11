@@ -20,18 +20,15 @@ jobs:
           command: nohup sudo npm start > server.log 2>&1 & # starts backend and prevents sonar from stopping backend running
           background: true  # Run backend in the background
       - run:
-          name: Create Backend Artifacts Directory
-          command: mkdir -p ~/artifacts/backend
+        name: Create Backend Artifacts Directory
+        command: mkdir -p /home/circleci/artifacts/backend
       - run:
           name: Copy Backend Build Output to Artifacts
           command: |
-            cp -R build ~/artifacts/backend/build || true
-            cp -R dist ~/artifacts/backend/dist || true
-      - run:
-          name: Check backend dir is made
-          command: ls -R ~/international-payment-pros/backend
+            cp -R /home/circleci/international-payment-pros/backend/build /home/circleci/artifacts/backend/build || true
+            cp -R /home/circleci/international-payment-pros/backend/dist /home/circleci/artifacts/backend/dist || true
       - store_artifacts:
-          path: ~/artifacts/backend
+          path: /home/circleci/artifacts/backend
           destination: backend-build
 
   build-frontend:
@@ -50,16 +47,16 @@ jobs:
           name: Build Frontend Project
           working_directory: ~/international-payment-pros/frontend
           command: sudo npm run build
-      - run:
+       - run:
           name: Create Frontend Artifacts Directory
-          command: mkdir -p ~/artifacts/frontend
+          command: mkdir -p /home/circleci/artifacts/frontend
       - run:
           name: Copy Frontend Build Output to Artifacts
           command: |
-            cp -R build ~/artifacts/frontend/build || true
-            cp -R dist ~/artifacts/frontend/dist || true
+            cp -R /home/circleci/international-payment-pros/frontend/build /home/circleci/artifacts/frontend/build || true
+            cp -R /home/circleci/international-payment-pros/frontend/dist /home/circleci/artifacts/frontend/dist || true
       - store_artifacts:
-          path: ~/artifacts/frontend
+          path: /home/circleci/artifacts/frontend
           destination: frontend-build
           
   sonarcloud:
