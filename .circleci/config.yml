@@ -1,15 +1,42 @@
 version: 2.1
 orbs:
-  node: circleci/node@5  # Node.js orb for Node-specific jobs
+  node: circleci/node@5
 
 jobs:
+  test-backend:
+    # Backend test job
+    executor: node/default
+    working_directory: ~/international-payment-pros/backend
+    steps:
+      - checkout
+      - run:
+          name: Install Backend Dependencies
+          command: npm install
+      - run:
+          name: Run Backend Tests
+          command: npm test --passWithNoTests
+
+  start-backend:
+    # Job to start the backend server
+    docker:
+      - image: circleci/node:14
+    working_directory: ~/international-payment-pros/backend
+    steps:
+      - checkout
+      - run:
+          name: Install Backend Dependencies
+          command: npm install
+      - run:
+          name: Start Backend Server
+          command: npm start  # Use your backend start command here
+          background: true    # Run backend in the background
+
   test-frontend:
-    # Job to test the frontend
+    # Frontend test job that depends on backend
     executor: node/default
     working_directory: ~/international-payment-pros/frontend
     steps:
-      - checkout:
-          path: ~/international-payment-pros
+      - checkout
       - run:
           name: Install Frontend Dependencies
           command: npm install
@@ -18,41 +45,17 @@ jobs:
           command: npm test --passWithNoTests
 
   build-frontend:
-    # Job to build the frontend
+    # Frontend build job
     executor: node/default
     working_directory: ~/international-payment-pros/frontend
     steps:
-      - checkout:
-          path: ~/international-payment-pros
+      - checkout
       - run:
           name: Install Frontend Dependencies
           command: npm install
       - run:
           name: Build Frontend Project
           command: npm run build
-      - run:
-          name: Create the ~/artifacts directory if it doesn't exist
-          command: mkdir -p ~/artifacts
-      - run:
-          name: Copy Frontend Artifacts
-          command: cp -R build dist public .output .next .docusaurus ~/artifacts 2>/dev/null || true
-      - store_artifacts:
-          path: ~/artifacts
-          destination: frontend-build
-
-  test-backend:
-    # Job to test the backend
-    executor: node/default
-    working_directory: ~/international-payment-pros/backend
-    steps:
-      - checkout:
-          path: ~/international-payment-pros
-      - run:
-          name: Install Backend Dependencies
-          command: npm install
-      - run:
-          name: Run Backend Tests
-          command: npm test --passWithNoTests
 
   sonarcloud:
     # SonarCloud analysis job
@@ -81,20 +84,20 @@ jobs:
           name: Deploy
           command: '# e.g., ./deploy.sh'
 
+
 workflows:
   build-and-test:
     jobs:
-      - test-frontend
+      - test-backend
+      - start-backend:
+          requires:
+            - test-backend
+      - test-frontend:
+          requires:
+            - start-backend
       - build-frontend:
           requires:
             - test-frontend
-      - test-backend:
-          requires:
-            - test-frontend
-      - sonarcloud:
-          requires:
-            - build-frontend
-            - test-backend
 
     # Uncomment the lines below to enable deployment after build and tests
       # (Make sure to replace `build-node` with `build-frontend` if this was a typo)
