@@ -45,6 +45,10 @@ jobs:
       - checkout:
           path: ~/international-payment-pros
       - run: 
+          name: Install sh and other dependencies 
+          command: |
+            apt-get update && apt-get install -y curl unzip sh
+      - run: 
           name: Install curl and unzip
           command: |
             apt-get update && apt-get install -y curl unzip
