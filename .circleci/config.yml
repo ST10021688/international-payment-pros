@@ -51,6 +51,10 @@ jobs:
             export PATH=$JAVA_HOME/bin:$PATH 
             java -version 
       - run: 
+          name: Install curl 
+          command: |
+          apt-get update && apt-get install -y curl
+      - run: 
           name: Install SonarQube Scanner 
           command: | 
             curl -sSLo sonar-scanner-cli.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-linux.zip 
