@@ -55,16 +55,11 @@ jobs:
           command: |
             apt-get update && apt-get install -y curl unzip
       - run: 
-          name: Install SonarQube Scanner 
-          command: | 
+          name: Install and Run SonarQube Scan 
+          command: |
             curl -sSLo sonar-scanner-cli.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-linux.zip 
             unzip sonar-scanner-cli.zip 
-            export PATH=$PATH:$(pwd)/sonar-scanner-4.6.2.2472-linux/bin 
-      - run: 
-          name: Run SonarQube Scan 
-          command: |
-            export JAVA_HOME=/usr/lib/jvm/java-17-openjdk 
-            export PATH=$JAVA_HOME/bin:$PATH
+            export PATH=$PATH:$(pwd)/sonar-scanner-4.6.2.2472-linux/bin
             sonar-scanner \
               -Dsonar.projectKey=ST10021688_international-payment-pros \
               -Dsonar.organization=st10021688 \
