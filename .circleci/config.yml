@@ -34,7 +34,7 @@ jobs:
           command: npm install
       - run:
           name: Build Frontend Project
-          command: npm start
+          command: npm run build 
           
   sonarcloud:
     # SonarCloud analysis job
@@ -54,15 +54,6 @@ jobs:
               -Dsonar.host.url=https://sonarcloud.io \
               -Dsonar.login=$3744a1f613fd4fcef9487e8a57032fa5fb397c13
 
-  deploy:
-    # Placeholder for deployment steps
-    docker:
-      - image: cimg/base:stable
-    steps:
-      - run:
-          name: Deploy
-          command: '# e.g., ./deploy.sh'
-
 workflows:
   build-and-test:
     jobs:
@@ -73,6 +64,3 @@ workflows:
       - sonarcloud:
           requires:
             - build-frontend
-      - deploy:
-          requires:
-            - sonarcloud
