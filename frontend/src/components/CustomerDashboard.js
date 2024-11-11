@@ -71,12 +71,11 @@ const CustomerDashboard = () => {
 
         <div className="main-actions">
           <button className="logout-button" onClick={handleLogout}>Logout</button>
-          <span className="divider"></span>
+          <h2>Welcome, {firstName}</h2>
         </div>
 
         <header>
           <h1>Customer Dashboard</h1>
-          <h2>Hello, {firstName}</h2>
         </header>
 
         <div className="main-actions">
@@ -93,6 +92,8 @@ const CustomerDashboard = () => {
 
         <section className="payment-receipts">
           <h3>Payment Receipts</h3>
+          <div className="receipt-container">
+
           {transactions.map((transaction) => (
             <div key={transaction._id} className="receipt">
               <p>Date: {new Date(transaction.date).toLocaleDateString()}</p>
@@ -102,6 +103,7 @@ const CustomerDashboard = () => {
               {transaction.transactionType === 'International' && <p>Status: <span className="pending">{transaction.status}</span></p>}
             </div>
           ))}
+          </div>
         </section>
       </div>
     </div>

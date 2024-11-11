@@ -125,6 +125,11 @@ const processTransaction = async (transactionData) => {
     }
     console.log('Processing transaction data:', transactionData);
 
+    // Ensure amountToTransfer is a positive value
+    if (amountToTransfer <= 0) {
+      throw new Error('Transaction amount must be a positive number');
+    }
+
     const newTransaction = new Transaction({
       userId,
       recipientName,
@@ -137,8 +142,6 @@ const processTransaction = async (transactionData) => {
       date,
     });
 
-    await newTransaction.save();
-
     // Find the user's account
     const userAccount = await Account.findOne({ userId });
 
@@ -149,8 +152,10 @@ const processTransaction = async (transactionData) => {
 
     // Check if the user has sufficient balance
     if (userAccount.balance < amountToTransfer) {
-      throw new Error('Insufficient balance');
+      throw new Error('Insufficient funds');
     }
+
+    await newTransaction.save();
 
     // Subtract the amount from the user's account balance
     userAccount.balance -= amountToTransfer;

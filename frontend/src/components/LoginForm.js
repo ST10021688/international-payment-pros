@@ -52,7 +52,7 @@ function Login() {
     setLoading(false);
   };
 
-
+  //---------------------------------------------------------------------------------------------------------//
   // UI
   return (
     <div className="main-container">
@@ -63,8 +63,9 @@ function Login() {
       </div>
 
       <div className="login-container">
+
         <h2>Login</h2>
-        {error && <p className="error-message">{error}</p>} {/* Display error message */}
+
         <form onSubmit={handleSubmit} className="login-form">
           <div>
             <label>Username:</label>
@@ -86,6 +87,8 @@ function Login() {
             />
           </div>
 
+          {error && <p className="error-message">{error}</p>}
+
           <button type="submit" disabled={loading}>
             {loading ? 'Logging in...' : 'Login'}
           </button>
@@ -95,6 +98,7 @@ function Login() {
           <label>Don't have an account?</label>
           <a href="/register">Register here</a>
         </div>
+
       </div>
     </div>
   );

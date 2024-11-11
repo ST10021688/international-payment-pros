@@ -75,42 +75,41 @@ const EmployeeDashboard = () => {
       <div className="employee-dashboard">
         <div className="main-actions">
           <button className="logout-button" onClick={handleLogout}>Logout</button>
-                    <h1>Employee Dashboard</h1>
-
+          <h1>Employee Dashboard</h1>
           <span className="divider"></span>
         </div>
 
         <div class="table-wrapper">
-        <table>
-          <thead>
-            <tr>
-              <th>Date</th>
-              <th>Sender</th>
-              <th>Recipient</th>
-              <th>Amount</th>
-              <th>Swift Code</th>
-              <th>Status</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {transactions.map(transaction => (
-              <tr key={transaction._id}>
-                <td>{new Date(transaction.date).toLocaleDateString()}</td>
-                <td>{users[transaction.userId]?.firstName} {users[transaction.userId]?.lastName}</td>
-                <td>{transaction.recipientName}</td>
-                <td>${transaction.amountToTransfer}</td>
-                <td>{transaction.swiftCode}</td>
-                <td>{transaction.status}</td>
-                <td>
-                  <button onClick={() => handleValidate(transaction._id)}>Validate</button>
-                  <button onClick={() => handleReject(transaction._id)}>Reject</button>
-                </td>
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Sender</th>
+                <th>Recipient</th>
+                <th>Amount</th>
+                <th>Swift Code</th>
+                <th>Status</th>
+                <th>Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+
+            <tbody>
+              {transactions.map(transaction => (
+                <tr key={transaction._id}>
+                  <td>{new Date(transaction.date).toLocaleDateString()}</td>
+                  <td>{users[transaction.userId]?.firstName} {users[transaction.userId]?.lastName}</td>
+                  <td>{transaction.recipientName}</td>
+                  <td>${transaction.amountToTransfer}</td>
+                  <td>{transaction.swiftCode}</td>
+                  <td>{transaction.status}</td>
+                  <td>
+                    <button onClick={() => handleValidate(transaction._id)}>Validate</button>
+                    <button onClick={() => handleReject(transaction._id)}>Reject</button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
