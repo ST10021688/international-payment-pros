@@ -17,7 +17,7 @@ connectToDatabase().catch(err => {
 app.use('/api/auth', authRoutes); // This mounts the authRoutes on the /api/auth path
 
 // Start the server
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });

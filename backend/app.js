@@ -13,7 +13,7 @@ const fs = require('fs'); // File system to read SSL certificates
 const path = require('path');
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5002;
 
 // SSL Config: Load your SSL certificates
 const sslOptions = {
@@ -69,12 +69,12 @@ https.createServer(sslOptions, app).listen(PORT, () => {
   console.log(`Secure server is running on port ${PORT}`);
 });
 
-
+/*
 // Start the server
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
-
+*/
 // Graceful shutdown
 process.on('SIGINT', async () => {
   await mongoose.connection.close();
