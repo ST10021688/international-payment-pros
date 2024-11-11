@@ -71,7 +71,6 @@ jobs:
             sudo apt-get update && sudo apt-get install -y unzip curl
             curl -sSLo /tmp/sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-6.2.1.4610-linux-x64.zip
             unzip /tmp/sonar-scanner.zip -d $HOME 
-            ls -al $HOME/sonar-scanner-6.2.1.4610-linux-x64
             echo 'export PATH=$HOME/sonar-scanner-6.2.1.4610-linux-x64/bin:$PATH' >> $BASH_ENV
             source $BASH_ENV
       - run:
@@ -93,8 +92,7 @@ jobs:
               -Dsonar.organization=st10021688 \
               -Dsonar.host.url=https://sonarcloud.io \
               -Dsonar.login=3744a1f613fd4fcef9487e8a57032fa5fb397c13 || true\
-              -Dsonar.sources=./backend,./frontend \
-              -X # Enables debug logging for detailed output
+              -Dsonar.sources=./backend,./frontend 
 
 workflows:
   build-and-test:
