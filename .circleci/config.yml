@@ -62,10 +62,10 @@ jobs:
   sonarcloud:
     docker:
       - image: cimg/openjdk:17.0
-    working_directory: ~/international-payment-pros
+    working_directory: /home/circleci/international-payment-pros
     steps:
       - checkout:
-          path: ~/international-payment-pros
+          path: /home/circleci/international-payment-pros
       - run:
           name: Install dependencies and SonarScanner
           command: |
