@@ -47,7 +47,7 @@ jobs:
       - run: 
           name: Install sh and other dependencies 
           command: |
-            apt-get update && apt-get install -y curl unzip sh
+            apt-get update && apt-get install -y curl unzip bash
       - run: 
           name: Install and Run SonarQube Scan 
           command: |
