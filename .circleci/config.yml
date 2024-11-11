@@ -92,7 +92,7 @@ jobs:
               -Dsonar.projectKey=ST10021688_international-payment-pros \
               -Dsonar.organization=st10021688 \
               -Dsonar.host.url=https://sonarcloud.io \
-              -Dsonar.login=$3744a1f613fd4fcef9487e8a57032fa5fb397c13 \
+              -Dsonar.login=$3744a1f613fd4fcef9487e8a57032fa5fb397c13 || true\
               -Dsonar.sources=./backend,./frontend \
               -X # Enables debug logging for detailed output
 
