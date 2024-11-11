@@ -45,6 +45,12 @@ jobs:
       - checkout:
           path: ~/international-payment-pros
       - run:
+          name: Set Java 17 as Default
+          command: |
+            export JAVA_HOME=/usr/local/openjdk-17  
+            export PATH=$JAVA_HOME/bin:$PATH        
+            java -version                           
+      - run:
           name: Install SonarScanner
           command: |
             curl -sSLo sonar-scanner-cli.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-linux.zip
