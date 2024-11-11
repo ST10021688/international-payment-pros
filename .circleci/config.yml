@@ -39,20 +39,20 @@ jobs:
           
   sonarcloud:
     docker:
-      - image: cimg/openjdk:17.0  # Updated to Java 17 to work with sonar scan
+      - image: cimg/openjdk:17.0  # Use Java 17 for SonarCloud
     working_directory: ~/international-payment-pros
     steps:
       - checkout:
           path: ~/international-payment-pros
       - run:
-        name: Install SonarScanner
-        command: |
-          curl -sSLo sonar-scanner-cli.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-linux.zip
-          unzip sonar-scanner-cli.zip -d $HOME
-          export JAVA_HOME=/usr/local/openjdk-17          
-          export PATH=$JAVA_HOME/bin:$HOME/sonar-scanner-4.6.2.2472-linux/bin:$PATH  
-          java -version                                  
-          sonar-scanner \
+          name: Install SonarScanner
+          command: |
+            curl -sSLo sonar-scanner-cli.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-linux.zip
+            unzip sonar-scanner-cli.zip -d $HOME
+            export JAVA_HOME=/usr/local/openjdk-17          
+            export PATH=$JAVA_HOME/bin:$HOME/sonar-scanner-4.6.2.2472-linux/bin:$PATH  
+            java -version                                  
+            sonar-scanner \
               -Dsonar.projectKey=ST10021688_international-payment-pros \
               -Dsonar.organization=st10021688 \
               -Dsonar.host.url=https://sonarcloud.io \
