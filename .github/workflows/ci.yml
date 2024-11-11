@@ -43,7 +43,7 @@ jobs:
       - name: Run Frontend Lint
         run: |
           cd frontend
-          npx eslint "src/**/*.{js,jsx}" --config ../backend/eslint.config.mjs --fix
+          npx eslint "./src/**/*.{js,jsx}" --config ../backend/eslint.config.mjs --fix --debug
 
       - name: Run Backend Tests
         run: |
