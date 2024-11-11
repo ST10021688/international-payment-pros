@@ -1,72 +1,37 @@
-.dashboard {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.main-container {
+  position: relative; 
+  height: 100vh;
+  width: 100vw;
   padding: 20px;
-  font-family: Arial, sans-serif; /* Consistent font */
-  background-color: #f9fafb; /* Light background for the dashboard */
-  color: #333; /* Standard text color */
 }
 
-header {
+.dashboard {
+  position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(46, 46, 46, 0.85); /* Slightly darker for readability */
+    color: #ffffff;
+    padding: 25px 20px; /* Adjusted padding for balance */
+    border-radius: 12px;
+    max-width: 600px;
+    width: 100%;
+    margin-left: 40px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5); /* Enhanced shadow for depth */
+}
+
+h1 {
   text-align: center;
   margin-bottom: 20px;
-  font-size: 24px; /* Larger font size for headers */
+  font-size: 36px; /* Larger font size for headers */
   font-weight: bold;
-  color: #4b5563; /* Darker color for better visibility */
-}
-
-.sidebar {
-  position: fixed;
-  left: 0;
-  top: 0;
-  height: 100vh; /* Full height sidebar */
-  width: 220px;
-  padding: 20px;
-  background-color: #2f3e46; /* Darker background color for sidebar */
-  color: #ffffff; /* Light text for contrast */
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-}
-
-.menu {
-  margin-bottom: 20px;
-}
-
-.menu button {
-  width: 100%;
-  padding: 10px;
-  background-color: transparent;
-  border: none;
   color: #ffffff;
-  font-size: 16px;
-  text-align: left;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
 }
 
-.menu button:hover {
-  background-color: #4B7AA5; /* Highlighted color on hover */
-}
-
-.submenu {
-  display: none;
-  flex-direction: column;
-  padding-left: 10px;
-  margin-top: 5px;
-}
-
-.menu button:hover + .submenu,
-.submenu:hover {
-  display: flex;
-}
-
-.submenu button {
-  padding: 8px;
-  background-color: #3a4e56;
+h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  font-size: 1.6rem;
   color: #ffffff;
-  border: none;
-  font-size: 14px;
-  text-align: left;
 }
 
 .main-actions {
@@ -93,15 +58,43 @@ header {
   background-color: #0056b3;
 }
 
+.divider {
+  width: 500px;
+}
+
+.logout-button {
+  background-color: #ff2e2e;  /* Red color for logout */
+  color: white;
+  border: none;
+  width: 100px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.logout-button:hover {
+  background-color: #e60000;  /* Darker red on hover */
+}
+
+.logout-button:focus {
+  outline: none;
+}
+
+.logout-button:active {
+  background-color: #cc0000;  /* Darkest red when button is clicked */
+}
+
 .banking-details,
 .payment-receipts {
   width: 100%;
   max-width: 600px;
   margin-bottom: 20px;
-  background-color: #ffffff;
+  background-color: rgba(46, 46, 46);
   padding: 15px;
   border-radius: 8px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); 
 }
 
 .receipt {
@@ -112,35 +105,24 @@ header {
   border: 1px solid #ddd;
   border-radius: 5px;
   margin-bottom: 10px;
-  background-color: #f8f9fa; /* Light background for receipts */
+  color: #ddd;
+  background-color: rgba(46, 46, 46);
   transition: background-color 0.3s ease;
+  gap: 10px; /* Add gap between items inside the flex container */
+}
+
+.receipt p {
+  margin: 5px; /* Remove default margin to prevent unwanted spacing */
 }
 
 .receipt:hover {
-  background-color: #e0f7fa; /* Light hover effect */
+  outline: none;
+    color: #ffffff;
+    border-color: #ffffff;
 }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-  .sidebar {
-      width: 100%;
-      height: auto;
-      position: static; /* Make sidebar static on smaller screens */
-      padding: 15px;
-      box-shadow: none;
-      background-color: #3a4e56; /* Dark background on mobile */
-  }
-
-  .menu button {
-      font-size: 14px;
-  }
-
-  .main-actions {
-      flex-direction: column;
-      align-items: center;
-      width: 100%;
-  }
-
   .action-button {
       width: 100%;
       max-width: 200px; /* Limit width for smaller screens */
@@ -151,4 +133,28 @@ header {
       max-width: 100%;
       padding: 10px;
   }
+}
+
+/* New styles for logo and label */
+.logo-container {
+  position: absolute;
+  top: 60px;
+  right: 60px;
+  display: flex;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(10px);
+  padding: 10px 15px;
+  border-radius: 16px;
+}
+
+.logo-container img {
+  max-width: 80px; /* Adjusted for better fit */
+}
+
+.logo-container label {
+  color: #0F225E;
+  font-size: 36px;
+  font-weight: bold;
+  margin-left: 8px;
 }

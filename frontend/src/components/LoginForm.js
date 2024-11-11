@@ -24,21 +24,21 @@ function Login() {
 
     // Validate inputs
     if (!validateUsername(sanitizedUsername)) {
-        setError('Username must be 3-20 characters long and can only contain letters, numbers, and underscores.');
-        setLoading(false); // Stop loading
-        return;
+      setError('Username must be 3-20 characters long and can only contain letters, numbers, and underscores.');
+      setLoading(false); // Stop loading
+      return;
     }
 
     if (!validatePassword(password)) {
-        setError('Password must be at least 8 characters long, include an uppercase letter, a lowercase letter, a digit, and a special character.');
-        setLoading(false);
-        return;
+      setError('Password must be at least 8 characters long, include an uppercase letter, a lowercase letter, a digit, and a special character.');
+      setLoading(false);
+      return;
     }
 
     try {
       const data = await authService.login(username, password);
 
-      // If login is successful, navigate to the appropriate dashboard
+      // If login is successful, redirect to the appropriate dashboard
       setUser({ userId: data.userId, firstName: data.firstName, userType: data.userType });
 
       if (data.userType === 'employee') {
@@ -51,43 +51,50 @@ function Login() {
     }
     setLoading(false);
   };
-  
+
 
   // UI
   return (
-    <div className="login-container">
+    <div className="main-container">
+
       <div className="logo-container">
         <img src={logo} alt="Logo" />
         <label>Global Banking</label>
       </div>
-      <h2>Login</h2>
-      {error && <p className="error-message">{error}</p>} {/* Display error message */}
-      <form onSubmit={handleSubmit} className="login-form">
-        <div>
-          <label>Username:</label>
-          <input
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-          />
+
+      <div className="login-container">
+        <h2>Login</h2>
+        {error && <p className="error-message">{error}</p>} {/* Display error message */}
+        <form onSubmit={handleSubmit} className="login-form">
+          <div>
+            <label>Username:</label>
+            <input
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+            />
+          </div>
+
+          <div>
+            <label>Password:</label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+
+          <button type="submit" disabled={loading}>
+            {loading ? 'Logging in...' : 'Login'}
+          </button>
+        </form>
+
+        <div className="additional-info">
+          <label>Don't have an account?</label>
+          <a href="/register">Register here</a>
         </div>
-        <div>
-          <label>Password:</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
-        <button type="submit" disabled={loading}>
-          {loading ? 'Logging in...' : 'Login'}
-        </button>
-      </form>
-      <div className="additional-info">
-        <label>Don't have an account?</label>
-        <a href="/register">Register here</a>
       </div>
     </div>
   );
