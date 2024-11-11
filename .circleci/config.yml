@@ -71,10 +71,9 @@ jobs:
             sudo apt-get update && sudo apt-get install -y unzip curl
             curl -sSLo /tmp/sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-6.2.1.4610-linux-x64.zip
             unzip /tmp/sonar-scanner.zip -d $HOME 
-            ls -al $HOME/sonar-scanner-6.2.1.4610-linux/bin
-            echo 'export PATH=$HOME/sonar-scanner-6.2.1.4610-linux/bin:$PATH' >> $BASH_ENV
+            ls -al $HOME/sonar-scanner-6.2.1.4610-linux-x64
+            echo 'export PATH=$HOME/sonar-scanner-6.2.1.4610-linux-x64/bin:$PATH' >> $BASH_ENV
             source $BASH_ENV
-            echo "Current PATH: $PATH"
       - run:
           name: Verify SonarScanner Installation
           command: sonar-scanner -v
