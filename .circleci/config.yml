@@ -19,6 +19,17 @@ jobs:
           working_directory: ~/international-payment-pros/backend
           command: sudo npm start
           background: true  # Run backend in the background
+      - run:
+          name: Create Backend Artifacts Directory
+          command: mkdir -p ~/artifacts/backend
+      - run:
+          name: Copy Backend Build Output to Artifacts
+          command: |
+            cp -R build ~/artifacts/backend/build || true
+            cp -R dist ~/artifacts/backend/dist || true
+      - store_artifacts:
+          path: ~/artifacts/backend
+          destination: backend-build
 
   build-frontend:
     # Frontend build job
@@ -36,6 +47,17 @@ jobs:
           name: Build Frontend Project
           working_directory: ~/international-payment-pros/frontend
           command: sudo npm run build
+      - run:
+          name: Create Frontend Artifacts Directory
+          command: mkdir -p ~/artifacts/frontend
+      - run:
+          name: Copy Frontend Build Output to Artifacts
+          command: |
+            cp -R build ~/artifacts/frontend/build || true
+            cp -R dist ~/artifacts/frontend/dist || true
+      - store_artifacts:
+          path: ~/artifacts/frontend
+          destination: frontend-build
           
   sonarcloud:
     docker:
