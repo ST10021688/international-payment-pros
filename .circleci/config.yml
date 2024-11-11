@@ -49,7 +49,7 @@ jobs:
           command: |
             curl -sSLo sonar-scanner-cli.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-linux.zip
             unzip sonar-scanner-cli.zip -d $HOME
-            export JAVA_HOME=/usr/local/openjdk-17
+            export JAVA_HOME=/opt/java/openjdk
             export PATH=$JAVA_HOME/bin:$HOME/sonar-scanner-4.6.2.2472-linux/bin:$PATH
             "$JAVA_HOME/bin/java" -version  # Check Java version
             sonar-scanner \
