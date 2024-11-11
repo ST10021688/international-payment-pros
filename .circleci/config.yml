@@ -4,6 +4,7 @@ orbs:
 
 jobs:
   start-backend:
+    # Job to start the backend server
     docker:
       - image: circleci/node:16  # Use Node.js 16 for backend
     working_directory: ~/international-payment-pros/backend
