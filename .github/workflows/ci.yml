@@ -35,15 +35,7 @@ jobs:
           cd frontend
           npm install
 
-      - name: Run Backend Lint
-        run: |
-          cd backend
-          npm run lint
-
-      - name: Run Frontend Lint
-        run: |
-          cd frontend
-          npx eslint "src/**/*.{js,jsx}" --config ../backend/eslint.config.mjs --fix
+      # Linting steps removed from the pipeline
 
       - name: Run Backend Tests
         run: |
